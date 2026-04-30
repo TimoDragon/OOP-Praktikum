@@ -20,8 +20,7 @@ public class Konto {
      * @param einzahlung    Die erste Einzahlung
      */
     public Konto(int nummer, Inhaber inhaber, int einzahlung) {
-        this.nummer = nummer;
-        this.inhaber = inhaber;
+        this(nummer, inhaber);
         einzahlen(einzahlung);
     }
 
@@ -32,8 +31,7 @@ public class Konto {
      * @param empfaenger    Konto, welches den "Freunschaftswerbung" Bonus bekommen soll
      */
     public Konto(int nummer, Inhaber inhaber, Konto empfaenger) {
-        this.nummer = nummer;
-        this.inhaber = inhaber;
+        this(nummer, inhaber);
         empfaenger.einzahlen(60);
     }
 
@@ -69,6 +67,11 @@ public class Konto {
         this.kontoStand -= amount;
     }
 
+    /**
+     * Überweist den Betrag auf den angegebenen Empfänger
+     * @param empfaenger das Empfänger Konto, auf welches überwiesen werden soll
+     * @param betrag der Betrag, der vom Konto abgebucht wird und auf das empfänger Konto draufgebucht wird
+     */
     public void ueberweisen(Konto empfaenger, int betrag) {
         abheben(betrag);
         empfaenger.einzahlen(betrag);
