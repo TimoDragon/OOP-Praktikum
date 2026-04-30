@@ -1,3 +1,6 @@
+/**
+ * Konto Klasse
+ */
 public class Konto {
     private final int nummer;
     private final Inhaber inhaber;
@@ -56,6 +59,10 @@ public class Konto {
      * @param amount    Der Betrag, der eingezahlt werden soll
      */
     public void einzahlen(int amount) {
+        if (amount <= 0) {
+            System.out.println("Keine Einzahlung mit: " + amount + " möglich!\n");
+            return;
+        }
         this.kontoStand += amount;
     }
 
@@ -64,6 +71,10 @@ public class Konto {
      * @param amount    Der Betrag, der abgehoben werden soll
      */
     public void abheben(int amount) {
+        if (getKontoStand() - amount < 0) {
+            System.out.println("Keine Abhebung mit: " + amount + " möglich!\n");
+            return;
+        }
         this.kontoStand -= amount;
     }
 
@@ -73,6 +84,12 @@ public class Konto {
      * @param betrag der Betrag, der vom Konto abgebucht wird und auf das empfänger Konto draufgebucht wird
      */
     public void ueberweisen(Konto empfaenger, int betrag) {
+        if (getKontoStand() - betrag < 0) {
+            System.out.println("Keine Überweisung mit: " + betrag  + " möglich!");
+            System.out.printf("Kontostand: " + getKontoStand() + " zu niedrig\n");
+            return;
+        }
+
         abheben(betrag);
         empfaenger.einzahlen(betrag);
     }

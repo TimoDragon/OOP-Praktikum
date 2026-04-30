@@ -1,3 +1,6 @@
+/**
+ * Inhaber
+ */
 public class Inhaber {
     private final String nachname;
     private final String vorname;
