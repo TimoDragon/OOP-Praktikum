@@ -1,41 +1,56 @@
+import java.util.Calendar;
+import java.util.ArrayList;
+
 /**
  * Konto Klasse
  */
 public class Konto {
-    private final int nummer;
+    private static int naechsteKontoNR = 1;
+    private final int kontoNR;
     private final Inhaber inhaber;
-    private int kontoStand = 0;
+    private float kontoStand;
+    private final ArrayList<Transaktion> List = new ArrayList<>();
 
     /**
      * Konstruktor für ein Konto, der nur die Nummer und den Inhaber nutzt
-     * @param nummer    Kontonummer
      * @param inhaber   Inhaber des Kontos
      */
-    public Konto(int nummer, Inhaber inhaber) {
-        this.nummer = nummer;
+    public Konto(Inhaber inhaber) {
         this.inhaber = inhaber;
+        this.kontoNR = naechsteKontoNR++;
     }
 
     /**
      * Konstruktor für ein Konto mit einer ersten Einzahlung
-     * @param nummer        Kontonummer
      * @param inhaber       Inhaber des Kontos
      * @param einzahlung    Die erste Einzahlung
      */
-    public Konto(int nummer, Inhaber inhaber, int einzahlung) {
-        this(nummer, inhaber);
+    public Konto(Inhaber inhaber, int einzahlung) throws Exception {
+        this(inhaber);
         einzahlen(einzahlung);
     }
 
     /**
      * Konstruktor für ein Konto mit Freundschaftswerbung
-     * @param nummer        Kontonummer
      * @param inhaber       Inhaber des Kontos
      * @param empfaenger    Konto, welches den "Freunschaftswerbung" Bonus bekommen soll
      */
-    public Konto(int nummer, Inhaber inhaber, Konto empfaenger) {
-        this(nummer, inhaber);
-        empfaenger.einzahlen(60);
+    public Konto(Inhaber inhaber, Konto empfaenger) {
+        this(inhaber);
+        try {
+            this.einzahlen(30);
+            empfaenger.einzahlen(30);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Gibt die Kontonummer zurück
+     * @return Kontonummer
+     */
+    public int getKontoNummer() {
+        return this.kontoStand;
     }
 
     /**
@@ -58,10 +73,9 @@ public class Konto {
      * Tätigt eine Einzahlung auf das Konto
      * @param amount    Der Betrag, der eingezahlt werden soll
      */
-    public void einzahlen(int amount) {
+    public void einzahlen(int amount) throws Exception {
         if (amount <= 0) {
-            System.out.println("Keine Einzahlung mit: " + amount + " möglich!\n");
-            return;
+            throw new Exception("Betrag darf nicht negativ sein");
         }
         this.kontoStand += amount;
     }
@@ -70,10 +84,9 @@ public class Konto {
      * Hebt Geld vom Konto ab
      * @param amount    Der Betrag, der abgehoben werden soll
      */
-    public void abheben(int amount) {
+    public void abheben(int amount) throws Exception {
         if (getKontoStand() - amount < 0) {
-            System.out.println("Keine Abhebung mit: " + amount + " möglich!\n");
-            return;
+            throw new Exception("Kontostand reicht nicht aus");
         }
         this.kontoStand -= amount;
     }
@@ -83,13 +96,7 @@ public class Konto {
      * @param empfaenger das Empfänger Konto, auf welches überwiesen werden soll
      * @param betrag der Betrag, der vom Konto abgebucht wird und auf das empfänger Konto draufgebucht wird
      */
-    public void ueberweisen(Konto empfaenger, int betrag) {
-        if (getKontoStand() - betrag < 0) {
-            System.out.println("Keine Überweisung mit: " + betrag  + " möglich!");
-            System.out.printf("Kontostand: " + getKontoStand() + " zu niedrig\n");
-            return;
-        }
-
+    public void ueberweisen(Konto empfaenger, int betrag) throws Exception {
         abheben(betrag);
         empfaenger.einzahlen(betrag);
     }
