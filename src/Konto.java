@@ -75,7 +75,7 @@ public class Konto {
      */
     public void einzahlen(float amount, Calendar cal) throws Exception {
         if (amount <= 0) {
-            throw new Exception("Betrag darf nicht negativ sein");
+            throw new IllegalArgumentException("Betrag darf nicht negativ sein");
         }
         this.kontoStand += amount;
         transaktion(amount,cal);
@@ -87,10 +87,10 @@ public class Konto {
      */
     public void abheben(float amount, Calendar cal) throws Exception {
         if (getKontoStand() - amount < 0) {
-            throw new Exception("Kontostand reicht nicht aus");
+            throw new IllegalArgumentException("Kontostand reicht nicht aus");
         }
         this.kontoStand -= amount;
-        transaktion(amount,cal);
+        transaktion(-amount,cal);
     }
 
     /**
@@ -113,6 +113,10 @@ public class Konto {
         List.add(transaction);
     }
 
+    /**
+     *
+     * @param cal
+     */
     public void getKontoauszuege(Calendar cal){
         System.out.println("-------------------------------------------");
         System.out.println("Kontoauszug für Konto: " + getKontoNummer());
@@ -124,5 +128,6 @@ public class Konto {
             }
         }
         System.out.println("AKtueller Kontostand: " + getKontoStand());
+        System.out.println("-------------------------------------------\n\n");
     }
 }
