@@ -50,14 +50,14 @@ public class Konto {
      * @return Kontonummer
      */
     public int getKontoNummer() {
-        return this.kontoStand;
+        return this.kontoNR;
     }
 
     /**
      * Gibt den Kontostand zurück
      * @return  Kontostand
      */
-    public int getKontoStand() {
+    public float getKontoStand() {
         return this.kontoStand;
     }
 
@@ -73,7 +73,7 @@ public class Konto {
      * Tätigt eine Einzahlung auf das Konto
      * @param amount    Der Betrag, der eingezahlt werden soll
      */
-    public void einzahlen(int amount) throws Exception {
+    public void einzahlen(float amount) throws Exception {
         if (amount <= 0) {
             throw new Exception("Betrag darf nicht negativ sein");
         }
@@ -84,7 +84,7 @@ public class Konto {
      * Hebt Geld vom Konto ab
      * @param amount    Der Betrag, der abgehoben werden soll
      */
-    public void abheben(int amount) throws Exception {
+    public void abheben(float amount) throws Exception {
         if (getKontoStand() - amount < 0) {
             throw new Exception("Kontostand reicht nicht aus");
         }
@@ -94,10 +94,10 @@ public class Konto {
     /**
      * Überweist den Betrag auf den angegebenen Empfänger
      * @param empfaenger das Empfänger Konto, auf welches überwiesen werden soll
-     * @param betrag der Betrag, der vom Konto abgebucht wird und auf das empfänger Konto draufgebucht wird
+     * @param amount der Betrag, der vom Konto abgebucht wird und auf das empfänger Konto draufgebucht wird
      */
-    public void ueberweisen(Konto empfaenger, int betrag) throws Exception {
-        abheben(betrag);
-        empfaenger.einzahlen(betrag);
+    public void ueberweisen(Konto empfaenger, float amount) throws Exception {
+        abheben(amount);
+        empfaenger.einzahlen(amount);
     }
 }

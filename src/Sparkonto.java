@@ -7,18 +7,18 @@ public class Sparkonto extends Konto{
 
 
     public Sparkonto(Inhaber pInhaber, float pZinssatz) {
-        this.zinssatz = pZinssatz;
         super(pInhaber);
+        this.zinssatz = pZinssatz;
     }
 
     public Sparkonto(Inhaber pInhaber, float pZinssatz, int pEinzahlung) throws Exception {
-        this.zinssatz = pZinssatz;
         super(pInhaber,pEinzahlung);
+        this.zinssatz = pZinssatz;
     }
 
     public Sparkonto(Inhaber pInhaber, float pZinssatz, Konto pEmpfaenger) throws Exception{
-        this.zinssatz = pZinssatz;
         super(pInhaber,pEmpfaenger);
+        this.zinssatz = pZinssatz;
     }
 
 
