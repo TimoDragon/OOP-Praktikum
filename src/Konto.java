@@ -95,16 +95,34 @@ public class Konto {
 
     /**
      * Überweist den Betrag auf den angegebenen Empfänger
-     * @param empfaenger das Empfänger Konto, auf welches überwiesen werden soll
-     * @param amount der Betrag, der vom Konto abgebucht wird und auf das empfänger Konto draufgebucht wird
+     * @param empfaenger    das Empfänger Konto, auf welches überwiesen werden soll
+     * @param amount        der Betrag, der vom Konto abgebucht wird und auf das empfänger Konto draufgebucht wird
      */
     public void ueberweisen(Konto empfaenger, float amount, Calendar cal) throws Exception {
         abheben(amount,cal);
         empfaenger.einzahlen(amount,cal);
     }
 
+    /**
+     * Erstellt eine neue Transaktion
+     * @param amount    Der Betrag, der transferiert wird
+     * @param cal       Das Datum, an dem die Transaktion stattgefunden hat
+     */
     public void transaktion(float amount, Calendar cal) {
         Transaktion transaction = new Transaktion(cal, amount);
         List.add(transaction);
+    }
+
+    public void getKontoauszuege(Calendar cal){
+        System.out.println("-------------------------------------------");
+        System.out.println("Kontoauszug für Konto: " + getKontoNummer());
+        System.out.println("-------------------------------------------");
+        for(Transaktion transaktion : List) {
+            if (cal == null || cal.compareTo(transaktion.getCal()) <= 0) {
+                System.out.println("Datum: " + transaktion.getCal().getTime() + "\nBetrag: " + transaktion.getAmount());
+                System.out.println("---------------------------");
+            }
+        }
+        System.out.println("AKtueller Kontostand: " + getKontoStand());
     }
 }
