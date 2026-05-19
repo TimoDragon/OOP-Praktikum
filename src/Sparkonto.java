@@ -21,6 +21,25 @@ public class Sparkonto extends Konto{
         this.zinssatz = pZinssatz;
     }
 
+    public void zinszahlung(Calendar cal) throws Exception {
+        if (naechsteZahlung != null && cal.compareTo(naechsteZahlung) < 0){
+            System.out.println("Zinszahlung noch nicht möglich \n");
+            return;
+        }
+        setNaechsteZinszahlung(cal);
+        float zinszahlung = (this.zinssatz/100) * getKontoStand();
+        einzahlen(zinszahlung, cal);
+    }
+
+    public Calendar getNaechsteZinszahlung() {
+        return naechsteZahlung;
+    }
+
+    public void setNaechsteZinszahlung(Calendar cal) {
+        naechsteZahlung = (Calendar) cal.clone();
+        naechsteZahlung.add(Calendar.YEAR, 1);
+    }
+
 
 
 

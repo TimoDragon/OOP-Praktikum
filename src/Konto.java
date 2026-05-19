@@ -27,7 +27,7 @@ public class Konto {
      */
     public Konto(Inhaber inhaber, int einzahlung) throws Exception {
         this(inhaber);
-        einzahlen(einzahlung);
+        einzahlen(einzahlung , Calendar.getInstance());
     }
 
     /**
@@ -38,8 +38,8 @@ public class Konto {
     public Konto(Inhaber inhaber, Konto empfaenger) {
         this(inhaber);
         try {
-            this.einzahlen(30);
-            empfaenger.einzahlen(30);
+            this.einzahlen(30, Calendar.getInstance());
+            empfaenger.einzahlen(30, Calendar.getInstance());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -73,22 +73,24 @@ public class Konto {
      * Tätigt eine Einzahlung auf das Konto
      * @param amount    Der Betrag, der eingezahlt werden soll
      */
-    public void einzahlen(float amount) throws Exception {
+    public void einzahlen(float amount, Calendar cal) throws Exception {
         if (amount <= 0) {
             throw new Exception("Betrag darf nicht negativ sein");
         }
         this.kontoStand += amount;
+        transaktion(amount,cal);
     }
 
     /**
      * Hebt Geld vom Konto ab
      * @param amount    Der Betrag, der abgehoben werden soll
      */
-    public void abheben(float amount) throws Exception {
+    public void abheben(float amount, Calendar cal) throws Exception {
         if (getKontoStand() - amount < 0) {
             throw new Exception("Kontostand reicht nicht aus");
         }
         this.kontoStand -= amount;
+        transaktion(amount,cal);
     }
 
     /**
@@ -96,8 +98,13 @@ public class Konto {
      * @param empfaenger das Empfänger Konto, auf welches überwiesen werden soll
      * @param amount der Betrag, der vom Konto abgebucht wird und auf das empfänger Konto draufgebucht wird
      */
-    public void ueberweisen(Konto empfaenger, float amount) throws Exception {
-        abheben(amount);
-        empfaenger.einzahlen(amount);
+    public void ueberweisen(Konto empfaenger, float amount, Calendar cal) throws Exception {
+        abheben(amount,cal);
+        empfaenger.einzahlen(amount,cal);
+    }
+
+    public void transaktion(float amount, Calendar cal) {
+        Transaktion transaction = new Transaktion(cal, amount);
+        List.add(transaction);
     }
 }
