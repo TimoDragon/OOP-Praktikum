@@ -48,8 +48,8 @@ public class Sparkonto extends Konto{
     }
 
     /**
-     *
-     * @param cal
+     * Funktion für die Zinszahlung auf ein Sparkonto
+     * @param cal Datum an dem die Zinszahlung stattfindet
      * @throws Exception
      */
     public void zinszahlung(Calendar cal) throws IllegalArgumentException {

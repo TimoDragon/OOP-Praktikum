@@ -9,30 +9,26 @@ public class Main {
         Sparkonto s1 = new Sparkonto(i2, 5);
 
         Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        Calendar c3 = Calendar.getInstance();
 
-        c1.set(Calendar.MONTH, 3);
         k1.abheben(10, c1);
         s1.einzahlen(20, c1);
         s1.zinszahlung(c1);
+        //s1.zinszahlung(c1);
 
-        Calendar c2 = Calendar.getInstance();
         c2.set(Calendar.MONTH, 7);
+        c2.set(Calendar.DATE ,11);
         k1.ueberweisen(s1, 30, c2);
-
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MONTH, 5);
-        s1.getKontoauszuege(cal);
-        k1.getKontoauszuege(cal);
+        s1.getKontoauszuege(c2);
+        k1.getKontoauszuege(c2);
 
 
-        cal.set(Calendar.YEAR, 2027);
-        cal.set(Calendar.MONTH, 11);
-        s1.zinszahlung(cal);
-        Calendar cal2 = (Calendar) cal.clone();
-        cal2.add(Calendar.YEAR, 1);
-        s1.zinszahlung(cal2);
-        cal2.add(Calendar.DAY_OF_MONTH, -1);
-        //s1.zinszahlung(cal2);
+        c3.set(Calendar.YEAR, 2027);
+        c3.set(Calendar.MONTH, 11);
+        s1.zinszahlung(c3);
+        k1.getKontoauszuege(null);
         s1.getKontoauszuege(null);
+
     }
 }

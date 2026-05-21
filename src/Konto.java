@@ -106,24 +106,32 @@ public class Konto {
 
     /**
      * Erstellt eine neue Transaktion
-     * @param amount    Der Betrag, der transferiert wird
-     * @param cal       Das Datum, an dem die Transaktion stattgefunden hat
+     * @param pAmount    Der Betrag, der transferiert wird
+     * @param  pCal       Das Datum, an dem die Transaktion stattgefunden hat
      */
-    public void transaktion(float amount, Calendar cal) {
-        Transaktion transaction = new Transaktion(cal, amount);
-        list.add(transaction);
+    public void transaktion(float pAmount, Calendar pCal) {
+        Transaktion transaction = new Transaktion( pCal, pAmount);
+
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (list.get(i).getCal().compareTo( pCal) <= 0) {
+                list.add(i + 1, transaction);
+                return;
+            }
+        }
+        list.add(0, transaction);
     }
+
 
     /**
      * Gibt alle Transaktionen bis zu einem bestimmten Datum aus
-     * @param cal Datum
+     * @param pCal Datum
      */
-    public void getKontoauszuege(Calendar cal){
+    public void getKontoauszuege(Calendar pCal){
         System.out.println("-------------------------------------------");
         System.out.println("Kontoauszug für Konto: " + getKontoNummer());
         System.out.println("-------------------------------------------");
         for(Transaktion transaktion : list) {
-            if (cal == null || cal.compareTo(transaktion.getCal()) <= 0) {
+            if (pCal == null || pCal.compareTo(transaktion.getCal()) <= 0) {
                 System.out.println("Datum: " + transaktion.getCal().getTime() + "\nBetrag: " + transaktion.getAmount());
                 System.out.println("---------------------------");
             }
