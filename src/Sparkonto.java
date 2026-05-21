@@ -23,7 +23,7 @@ public class Sparkonto extends Konto{
      * @param pEinzahlung
      * @throws Exception
      */
-    public Sparkonto(Inhaber pInhaber, float pZinssatz, int pEinzahlung) throws Exception {
+    public Sparkonto(Inhaber pInhaber, float pZinssatz, int pEinzahlung) throws IllegalArgumentException {
         super(pInhaber,pEinzahlung);
         this.zinssatz = pZinssatz;
     }
@@ -35,7 +35,7 @@ public class Sparkonto extends Konto{
      * @param pEmpfaenger
      * @throws Exception
      */
-    public Sparkonto(Inhaber pInhaber, float pZinssatz, Konto pEmpfaenger) throws Exception{
+    public Sparkonto(Inhaber pInhaber, float pZinssatz, Konto pEmpfaenger) throws IllegalArgumentException{
         super(pInhaber,pEmpfaenger);
         this.zinssatz = pZinssatz;
     }
@@ -45,7 +45,7 @@ public class Sparkonto extends Konto{
      * @param cal
      * @throws Exception
      */
-    public void zinszahlung(Calendar cal) throws Exception {
+    public void zinszahlung(Calendar cal) throws IllegalArgumentException {
         if (naechsteZahlung != null && cal.compareTo(naechsteZahlung) < 0){
             throw new IllegalArgumentException("Zinszahlung noch nicht möglich");
         }
