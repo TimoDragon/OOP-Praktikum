@@ -13,7 +13,7 @@ public class Konto {
 
 
     /**
-     * Konstruktor für ein Konto, der nur die Nummer und den Inhaber nutzt
+     * Konstruktor für ein Konto, der nur den Inhaber nutzt
      * @param inhaber   Inhaber des Kontos
      */
     public Konto(Inhaber inhaber) {

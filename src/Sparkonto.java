@@ -7,9 +7,9 @@ public class Sparkonto extends Konto{
 
 
     /**
-     *
-     * @param pInhaber
-     * @param pZinssatz
+     * Konstruktor für ein Sparkonto der den Inhaber und Zinssatz nutzt
+     * @param pInhaber  der Inhaber des Sparkontos
+     * @param pZinssatz der Zinssatz des Sparkontos
      */
     public Sparkonto(Inhaber pInhaber, float pZinssatz) {
         super(pInhaber);
@@ -17,27 +17,34 @@ public class Sparkonto extends Konto{
     }
 
     /**
-     *
-     * @param pInhaber
-     * @param pZinssatz
-     * @param pEinzahlung
+     * Konstruktor für ein Sparkonto der den Inhaber und Zinssatz nutzt und eine Einzahlung auf das Sparkonto tätigt
+     * @param pInhaber der Inhaber des Sparkontos
+     * @param pZinssatz der Zinssatz des Sparkontos
+     * @param pEinzahlung die Einzahlung auf das Konto
      * @throws Exception
      */
-    public Sparkonto(Inhaber pInhaber, float pZinssatz, int pEinzahlung) throws IllegalArgumentException {
+    public Sparkonto(Inhaber pInhaber, float pZinssatz, int pEinzahlung) throws Exception {
         super(pInhaber,pEinzahlung);
+        einzahlen(pEinzahlung, Calendar.getInstance());
         this.zinssatz = pZinssatz;
     }
 
     /**
-     *
-     * @param pInhaber
-     * @param pZinssatz
-     * @param pEmpfaenger
+     * Konstruktor für ein Konto mit Freundschaftswerbung
+     * @param pInhaber inhaber des Kontos
+     * @param pZinssatz zinssatz
+     * @param pEmpfaenger Empfänger, der den Freundschaftsbonus erhällt
      * @throws Exception
      */
     public Sparkonto(Inhaber pInhaber, float pZinssatz, Konto pEmpfaenger) throws IllegalArgumentException{
         super(pInhaber,pEmpfaenger);
         this.zinssatz = pZinssatz;
+        try {
+            this.einzahlen(30, Calendar.getInstance());
+            pEmpfaenger.einzahlen(30, Calendar.getInstance());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -55,25 +62,19 @@ public class Sparkonto extends Konto{
     }
 
     /**
-     *
-     * @return
+     * Getter für die nächste Zinszahlung
+     * @return nächsteZahlung
      */
     public Calendar getNaechsteZinszahlung() {
         return naechsteZahlung;
     }
 
     /**
-     *
-     * @param cal
+     * Setter für die nächste Zinszahlung
+     * @param cal Datum
      */
     public void setNaechsteZinszahlung(Calendar cal) {
         naechsteZahlung = (Calendar) cal.clone();
         naechsteZahlung.add(Calendar.YEAR, 1);
     }
-
-
-
-
-
-
 }
