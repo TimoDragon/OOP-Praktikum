@@ -12,33 +12,32 @@ public class Main {
         Calendar c2 = Calendar.getInstance();
         Calendar c3 = Calendar.getInstance();
 
-        c3.set(Calendar.DATE, 23);
         c2.set(Calendar.DATE, 22);
+        c3.set(Calendar.DATE, 23);
 
         k1.abheben(5,c3);
         k1.abheben(10, c1);
 
         k1.einzahlen(10,c2);
 
-        k1.getKontoauszuege(null);
+        k1.printKontoauszuege(null);
 
         s1.einzahlen(20, c1);
         s1.zinszahlung(c1);
         //s1.zinszahlung(c1);
-        s1.getKontoauszuege(c1);
+        s1.printKontoauszuege(c1);
 
         c2.set(Calendar.MONTH, 7);
-        c2.set(Calendar.DATE ,11);
+        c2.set(Calendar.DATE, 11);
         k1.ueberweisen(s1, 30, c2);
-        s1.getKontoauszuege(c2);
-        k1.getKontoauszuege(c2);
+        s1.printKontoauszuege(c2);
+        k1.printKontoauszuege(c2);
 
 
         c3.set(Calendar.YEAR, 2027);
         c3.set(Calendar.MONTH, 11);
         s1.zinszahlung(c3);
-        k1.getKontoauszuege(null);
-        s1.getKontoauszuege(null);
-
+        k1.printKontoauszuege(null);
+        s1.printKontoauszuege(null);
     }
 }

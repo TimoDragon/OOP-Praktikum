@@ -8,7 +8,7 @@ public class Transaktion {
      * @param pDate     Datum der Transaktion
      * @param pAmount   Betrag der Transaktion
      */
-    public Transaktion(Calendar pDate, float pAmount){
+    public Transaktion(Calendar pDate, float pAmount) {
         this.cal = pDate;
         this.amount = pAmount;
     }

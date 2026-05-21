@@ -78,8 +78,13 @@ public class Konto {
         if (amount <= 0) {
             throw new IllegalArgumentException("Betrag darf nicht negativ sein");
         }
+
+        if (cal == null) {
+            throw new IllegalArgumentException("Kein Datum angegeben");
+        }
+
         this.kontoStand += amount;
-        transaktion(amount,cal);
+        createTransaktion(amount,cal);
     }
 
     /**
@@ -87,11 +92,16 @@ public class Konto {
      * @param amount    Der Betrag, der abgehoben werden soll
      */
     public void abheben(float amount, Calendar cal) throws IllegalArgumentException {
-        if (getKontoStand() - amount < 0) {
+        if (getKontoStand() - amount < 0 ) {
             throw new IllegalArgumentException("Kontostand reicht nicht aus");
         }
+
+        if (cal == null) {
+            throw new IllegalArgumentException("Kein Datum angegeben");
+        }
+
         this.kontoStand -= amount;
-        transaktion(-amount,cal);
+        createTransaktion(-amount,cal);
     }
 
     /**
@@ -109,27 +119,30 @@ public class Konto {
      * @param pAmount    Der Betrag, der transferiert wird
      * @param  pCal       Das Datum, an dem die Transaktion stattgefunden hat
      */
-    public void transaktion(float pAmount, Calendar pCal) {
+    public void createTransaktion(float pAmount, Calendar pCal) {
         Transaktion transaction = new Transaktion( pCal, pAmount);
+        if (list.isEmpty()) {
+            list.add(transaction);
+            return;
+        }
+
         for (int i = list.size() - 1; i >= 0; i--) {
             if (list.get(i).getCal().compareTo(pCal) < 0) {
                 list.add(i + 1, transaction);
                 return;
             }
         }
-        list.add(0, transaction);
     }
-
 
     /**
      * Gibt alle Transaktionen bis zu einem bestimmten Datum aus
      * @param pCal Datum
      */
-    public void getKontoauszuege(Calendar pCal){
+    public void printKontoauszuege(Calendar pCal) {
         System.out.println("-------------------------------------------");
         System.out.println("Kontoauszug für Konto: " + getKontoNummer());
         System.out.println("-------------------------------------------");
-        for(Transaktion transaktion : list) {
+        for (Transaktion transaktion : list) {
             if (pCal == null || pCal.compareTo(transaktion.getCal()) <= 0) {
                 System.out.println("Datum: " + transaktion.getCal().getTime() + "\nBetrag: " + transaktion.getAmount());
                 System.out.println("---------------------------");
