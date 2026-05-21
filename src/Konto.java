@@ -74,7 +74,7 @@ public class Konto {
      * Tätigt eine Einzahlung auf das Konto
      * @param amount    Der Betrag, der eingezahlt werden soll
      */
-    public void einzahlen(float amount, Calendar cal) throws Exception {
+    public void einzahlen(float amount, Calendar cal) throws IllegalArgumentException {
         if (amount <= 0) {
             throw new IllegalArgumentException("Betrag darf nicht negativ sein");
         }
@@ -86,7 +86,7 @@ public class Konto {
      * Hebt Geld vom Konto ab
      * @param amount    Der Betrag, der abgehoben werden soll
      */
-    public void abheben(float amount, Calendar cal) throws Exception {
+    public void abheben(float amount, Calendar cal) throws IllegalArgumentException {
         if (getKontoStand() - amount < 0) {
             throw new IllegalArgumentException("Kontostand reicht nicht aus");
         }
@@ -99,7 +99,7 @@ public class Konto {
      * @param empfaenger    das Empfänger Konto, auf welches überwiesen werden soll
      * @param amount        der Betrag, der vom Konto abgebucht wird und auf das empfänger Konto draufgebucht wird
      */
-    public void ueberweisen(Konto empfaenger, float amount, Calendar cal) throws Exception {
+    public void ueberweisen(Konto empfaenger, float amount, Calendar cal) throws IllegalArgumentException {
         abheben(amount,cal);
         empfaenger.einzahlen(amount,cal);
     }
