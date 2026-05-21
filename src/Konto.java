@@ -5,11 +5,12 @@ import java.util.ArrayList;
  * Konto Klasse
  */
 public class Konto {
-    private static int naechsteKontoNR = 1;
-    private final int kontoNR;
+    private static int naechsteKontoNr = 1;
+    private final int kontoNr;
     private final Inhaber inhaber;
+    private final ArrayList<Transaktion> list = new ArrayList<>();
     private float kontoStand;
-    private final ArrayList<Transaktion> List = new ArrayList<>();
+
 
     /**
      * Konstruktor für ein Konto, der nur die Nummer und den Inhaber nutzt
@@ -17,7 +18,7 @@ public class Konto {
      */
     public Konto(Inhaber inhaber) {
         this.inhaber = inhaber;
-        this.kontoNR = naechsteKontoNR++;
+        this.kontoNr = naechsteKontoNr++;
     }
 
     /**
@@ -50,7 +51,7 @@ public class Konto {
      * @return Kontonummer
      */
     public int getKontoNummer() {
-        return this.kontoNR;
+        return this.kontoNr;
     }
 
     /**
@@ -110,18 +111,18 @@ public class Konto {
      */
     public void transaktion(float amount, Calendar cal) {
         Transaktion transaction = new Transaktion(cal, amount);
-        List.add(transaction);
+        list.add(transaction);
     }
 
     /**
-     *
-     * @param cal
+     * Gibt alle Transaktionen bis zu einem bestimmten Datum aus
+     * @param cal Datum
      */
     public void getKontoauszuege(Calendar cal){
         System.out.println("-------------------------------------------");
         System.out.println("Kontoauszug für Konto: " + getKontoNummer());
         System.out.println("-------------------------------------------");
-        for(Transaktion transaktion : List) {
+        for(Transaktion transaktion : list) {
             if (cal == null || cal.compareTo(transaktion.getCal()) <= 0) {
                 System.out.println("Datum: " + transaktion.getCal().getTime() + "\nBetrag: " + transaktion.getAmount());
                 System.out.println("---------------------------");
