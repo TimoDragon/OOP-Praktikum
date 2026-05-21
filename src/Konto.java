@@ -151,4 +151,8 @@ public class Konto {
         System.out.println("AKtueller Kontostand: " + getKontoStand());
         System.out.println("-------------------------------------------\n\n");
     }
+
+    public void printKontoauszuege() {
+        printKontoauszuege(null);
+    }
 }

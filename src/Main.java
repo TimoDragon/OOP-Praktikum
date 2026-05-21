@@ -23,8 +23,13 @@ public class Main {
         k1.printKontoauszuege(null);
 
         s1.einzahlen(20, c1);
-        s1.zinszahlung(c1);
-        //s1.zinszahlung(c1);
+        if(s1.zinszahlung(c1) == false) {
+            System.out.println("Zinszahlung nicht möglich");
+        }
+
+        if(s1.zinszahlung(c1) == false) {
+            System.out.println("Zinszahlung nicht möglich");
+        }
         s1.printKontoauszuege(c1);
 
         c2.set(Calendar.MONTH, 7);

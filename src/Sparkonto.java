@@ -13,6 +13,7 @@ public class Sparkonto extends Konto{
      */
     public Sparkonto(Inhaber pInhaber, float pZinssatz) {
         super(pInhaber);
+        setNaechsteZinszahlung(Calendar.getInstance());
         this.zinssatz = pZinssatz;
     }
 
@@ -50,15 +51,15 @@ public class Sparkonto extends Konto{
     /**
      * Funktion für die Zinszahlung auf ein Sparkonto
      * @param cal Datum an dem die Zinszahlung stattfindet
-     * @throws Exception
      */
-    public void zinszahlung(Calendar cal) throws IllegalArgumentException {
+    public boolean zinszahlung(Calendar cal) {
         if (naechsteZahlung != null && cal.compareTo(naechsteZahlung) < 0){
-            throw new IllegalArgumentException("Zinszahlung noch nicht möglich");
+            return false;
         }
         setNaechsteZinszahlung(cal);
         float zinszahlung = (this.zinssatz/100) * getKontoStand();
         einzahlen(zinszahlung, cal);
+        return true;
     }
 
     /**
