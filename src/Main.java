@@ -12,8 +12,12 @@ public class Main {
         Calendar c2 = Calendar.getInstance();
         Calendar c3 = Calendar.getInstance();
 
-        c1.set(Calendar.DATE, 22);
+        c3.set(Calendar.DATE, 23);
+        c2.set(Calendar.DATE, 22);
+
+        k1.abheben(5,c3);
         k1.abheben(10, c1);
+
         k1.einzahlen(10,c2);
 
         k1.getKontoauszuege(null);
