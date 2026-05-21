@@ -111,9 +111,8 @@ public class Konto {
      */
     public void transaktion(float pAmount, Calendar pCal) {
         Transaktion transaction = new Transaktion( pCal, pAmount);
-
         for (int i = list.size() - 1; i >= 0; i--) {
-            if (list.get(i).getCal().compareTo( pCal) <= 0) {
+            if (list.get(i).getCal().compareTo(pCal) < 0) {
                 list.add(i + 1, transaction);
                 return;
             }
