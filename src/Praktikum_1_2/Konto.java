@@ -1,8 +1,10 @@
+package Praktikum_1_2;
+
 import java.util.Calendar;
 import java.util.ArrayList;
 
 /**
- * Konto Klasse
+ * Praktikum_1_2.Konto Klasse
  */
 public class Konto {
     private static int naechsteKontoNr = 1;
@@ -13,8 +15,8 @@ public class Konto {
 
 
     /**
-     * Konstruktor für ein Konto, der nur den Inhaber nutzt
-     * @param inhaber   Inhaber des Kontos
+     * Konstruktor für ein Praktikum_1_2.Konto, der nur den Praktikum_1_2.Inhaber nutzt
+     * @param inhaber   Praktikum_1_2.Inhaber des Kontos
      */
     public Konto(Inhaber inhaber) {
         this.inhaber = inhaber;
@@ -22,8 +24,8 @@ public class Konto {
     }
 
     /**
-     * Konstruktor für ein Konto mit einer ersten Einzahlung
-     * @param inhaber       Inhaber des Kontos
+     * Konstruktor für ein Praktikum_1_2.Konto mit einer ersten Einzahlung
+     * @param inhaber       Praktikum_1_2.Inhaber des Kontos
      * @param einzahlung    Die erste Einzahlung
      */
     public Konto(Inhaber inhaber, int einzahlung) throws Exception {
@@ -32,9 +34,9 @@ public class Konto {
     }
 
     /**
-     * Konstruktor für ein Konto mit Freundschaftswerbung
-     * @param inhaber       Inhaber des Kontos
-     * @param empfaenger    Konto, welches den "Freunschaftswerbung" Bonus bekommen soll
+     * Konstruktor für ein Praktikum_1_2.Konto mit Freundschaftswerbung
+     * @param inhaber       Praktikum_1_2.Inhaber des Kontos
+     * @param empfaenger    Praktikum_1_2.Konto, welches den "Freunschaftswerbung" Bonus bekommen soll
      */
     public Konto(Inhaber inhaber, Konto empfaenger) {
         this(inhaber);
@@ -63,15 +65,15 @@ public class Konto {
     }
 
     /**
-     * Gibt den Inhaber zurück
-     * @return  Inhaber
+     * Gibt den Praktikum_1_2.Inhaber zurück
+     * @return  Praktikum_1_2.Inhaber
      */
     public Inhaber getInhaber() {
         return this.inhaber;
     }
 
     /**
-     * Tätigt eine Einzahlung auf das Konto
+     * Tätigt eine Einzahlung auf das Praktikum_1_2.Konto
      * @param amount    Der Betrag, der eingezahlt werden soll
      */
     public void einzahlen(float amount, Calendar cal) throws IllegalArgumentException {
@@ -88,7 +90,7 @@ public class Konto {
     }
 
     /**
-     * Hebt Geld vom Konto ab
+     * Hebt Geld vom Praktikum_1_2.Konto ab
      * @param amount    Der Betrag, der abgehoben werden soll
      */
     public void abheben(float amount, Calendar cal) throws IllegalArgumentException {
@@ -106,8 +108,8 @@ public class Konto {
 
     /**
      * Überweist den Betrag auf den angegebenen Empfänger
-     * @param empfaenger    das Empfänger Konto, auf welches überwiesen werden soll
-     * @param amount        der Betrag, der vom Konto abgebucht wird und auf das empfänger Konto draufgebucht wird
+     * @param empfaenger    das Empfänger Praktikum_1_2.Konto, auf welches überwiesen werden soll
+     * @param amount        der Betrag, der vom Praktikum_1_2.Konto abgebucht wird und auf das empfänger Praktikum_1_2.Konto draufgebucht wird
      */
     public void ueberweisen(Konto empfaenger, float amount, Calendar cal) throws IllegalArgumentException {
         abheben(amount,cal);
@@ -115,9 +117,9 @@ public class Konto {
     }
 
     /**
-     * Erstellt eine neue Transaktion
+     * Erstellt eine neue Praktikum_1_2.Transaktion
      * @param pAmount    Der Betrag, der transferiert wird
-     * @param  pCal       Das Datum, an dem die Transaktion stattgefunden hat
+     * @param  pCal       Das Datum, an dem die Praktikum_1_2.Transaktion stattgefunden hat
      */
     public void createTransaktion(float pAmount, Calendar pCal) {
         Transaktion transaction = new Transaktion( pCal, pAmount);
@@ -140,7 +142,7 @@ public class Konto {
      */
     public void printKontoauszuege(Calendar pCal) {
         System.out.println("-------------------------------------------");
-        System.out.println("Kontoauszug für Konto: " + getKontoNummer());
+        System.out.println("Kontoauszug für Praktikum_1_2.Konto: " + getKontoNummer());
         System.out.println("-------------------------------------------");
         for (Transaktion transaktion : list) {
             if (pCal == null || pCal.compareTo(transaktion.getCal()) <= 0) {

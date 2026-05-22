@@ -1,3 +1,5 @@
+package Praktikum_1_2;
+
 import java.util.Calendar;
 
 public class Sparkonto extends Konto{
@@ -7,8 +9,8 @@ public class Sparkonto extends Konto{
 
 
     /**
-     * Konstruktor für ein Sparkonto der den Inhaber und Zinssatz nutzt
-     * @param pInhaber  der Inhaber des Sparkontos
+     * Konstruktor für ein Praktikum_1_2.Sparkonto der den Praktikum_1_2.Inhaber und Zinssatz nutzt
+     * @param pInhaber  der Praktikum_1_2.Inhaber des Sparkontos
      * @param pZinssatz der Zinssatz des Sparkontos
      */
     public Sparkonto(Inhaber pInhaber, float pZinssatz) {
@@ -18,10 +20,10 @@ public class Sparkonto extends Konto{
     }
 
     /**
-     * Konstruktor für ein Sparkonto der den Inhaber und Zinssatz nutzt und eine Einzahlung auf das Sparkonto tätigt
-     * @param pInhaber der Inhaber des Sparkontos
+     * Konstruktor für ein Praktikum_1_2.Sparkonto der den Praktikum_1_2.Inhaber und Zinssatz nutzt und eine Einzahlung auf das Praktikum_1_2.Sparkonto tätigt
+     * @param pInhaber der Praktikum_1_2.Inhaber des Sparkontos
      * @param pZinssatz der Zinssatz des Sparkontos
-     * @param pEinzahlung die Einzahlung auf das Konto
+     * @param pEinzahlung die Einzahlung auf das Praktikum_1_2.Konto
      * @throws Exception
      */
     public Sparkonto(Inhaber pInhaber, float pZinssatz, int pEinzahlung) throws Exception {
@@ -31,7 +33,7 @@ public class Sparkonto extends Konto{
     }
 
     /**
-     * Konstruktor für ein Konto mit Freundschaftswerbung
+     * Konstruktor für ein Praktikum_1_2.Konto mit Freundschaftswerbung
      * @param pInhaber inhaber des Kontos
      * @param pZinssatz zinssatz
      * @param pEmpfaenger Empfänger, der den Freundschaftsbonus erhällt
@@ -49,7 +51,7 @@ public class Sparkonto extends Konto{
     }
 
     /**
-     * Funktion für die Zinszahlung auf ein Sparkonto
+     * Funktion für die Zinszahlung auf ein Praktikum_1_2.Sparkonto
      * @param cal Datum an dem die Zinszahlung stattfindet
      */
     public boolean zinszahlung(Calendar cal) {

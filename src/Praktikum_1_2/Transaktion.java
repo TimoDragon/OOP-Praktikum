@@ -1,3 +1,5 @@
+package Praktikum_1_2;
+
 import java.util.Calendar;
 
 public class Transaktion {
@@ -5,8 +7,8 @@ public class Transaktion {
     private final float amount;
 
     /**
-     * @param pDate     Datum der Transaktion
-     * @param pAmount   Betrag der Transaktion
+     * @param pDate     Datum der Praktikum_1_2.Transaktion
+     * @param pAmount   Betrag der Praktikum_1_2.Transaktion
      */
     public Transaktion(Calendar pDate, float pAmount) {
         this.cal = pDate;
@@ -14,7 +16,7 @@ public class Transaktion {
     }
 
     /**
-     * @return Datum der Transaktion
+     * @return Datum der Praktikum_1_2.Transaktion
      */
     public Calendar getCal() {
         return cal;
@@ -22,7 +24,7 @@ public class Transaktion {
 
     /**
      *
-     * @return Betrag der Transaktion
+     * @return Betrag der Praktikum_1_2.Transaktion
      */
     public float getAmount() {
         return amount;

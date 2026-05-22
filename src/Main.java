@@ -1,3 +1,7 @@
+import Praktikum_1_2.Inhaber;
+import Praktikum_1_2.Konto;
+import Praktikum_1_2.Sparkonto;
+
 import java.util.Calendar;
 
 public class Main {

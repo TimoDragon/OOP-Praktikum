@@ -1,5 +1,7 @@
+package Praktikum_1_2;
+
 /**
- * Inhaber
+ * Praktikum_1_2.Inhaber
  */
 public class Inhaber {
     private final String nachname;
@@ -7,7 +9,7 @@ public class Inhaber {
     private final String adresse;
 
     /**
-     * Konstruktor für einen Inhaber
+     * Konstruktor für einen Praktikum_1_2.Inhaber
      * @param vorname   Vorname
      * @param nachname  Nachname
      * @param adresse   Adresse als String
