@@ -16,9 +16,21 @@ class Room {
     private int yCoordinate;
     private int xCoordinate;
 
+
     /**
      *
      * @param beschreibung
+     */
+    public Room(String beschreibung) {
+        this.beschreibung = beschreibung;
+        this.ausgaenge = new HashMap();
+    }
+
+    /**
+     *
+     * @param beschreibung
+     * @param y
+     * @param x
      */
     public Room(String beschreibung, int y, int x) {
         this.beschreibung = beschreibung;
@@ -34,17 +46,30 @@ class Room {
      */
     public void setzeAusgang(String richtung, Room nachbar) {
         switch (richtung) {
-            case "north" :
+            case "north":
+                nachbar.setXCoordinate(this.xCoordinate);
                 nachbar.setYCoordinate(this.yCoordinate + 1);
-            case "south" :
+                break;
+
+            case "south":
+                nachbar.setXCoordinate(this.xCoordinate);
                 nachbar.setYCoordinate(this.yCoordinate - 1);
-            case "west" :
+                break;
+
+            case "west":
                 nachbar.setXCoordinate(this.xCoordinate - 1);
-            case "east" :
+                nachbar.setYCoordinate(this.yCoordinate);
+                break;
+
+            case "east":
                 nachbar.setXCoordinate(this.xCoordinate + 1);
+                nachbar.setYCoordinate(this.yCoordinate);
+                break;
         }
+
         this.ausgaenge.put(richtung, nachbar);
     }
+
 
     /**
      *

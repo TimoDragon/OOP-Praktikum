@@ -6,7 +6,7 @@ package Praktikum_3;
 //
 
 class Commands {
-    private static final String[] gueltigeBefehle = new String[]{"go", "quit", "help"};
+    private static final String[] gueltigeBefehle = new String[]{"go", "quit", "help", "map"};
 
     public Commands() {
     }

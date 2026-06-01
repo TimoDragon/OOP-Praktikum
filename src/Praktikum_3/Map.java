@@ -6,15 +6,12 @@ public class Map {
     private List<Room> rooms;
 
 
-    public Map() {
-        createMap();
-    }
-
-    public void createMap() {
-
+    public Map(List<Room> pRooms) {
+        this.rooms = pRooms;
     }
 
     public void printMap() {
+        System.out.println("Tst");
         /**
          * Setze die int Werte aufs maximale Value
          */
@@ -23,28 +20,25 @@ public class Map {
         int minY = Integer.MAX_VALUE;
         int maxY = Integer.MIN_VALUE;
 
-        for (Room i : rooms) {
-            for (Room r : rooms) {
-                int x = r.getXCoordinate();
-                int y = r.getYCoordinate();
+        for (Room r : rooms) {
+            int x = r.getXCoordinate();
+            int y = r.getYCoordinate();
 
-                if (x < minX) minX = x;
-                if (x > maxX) maxX = x;
-                if (y < minY) minY = y;
-                if (y > maxY) maxY = y;
-            }
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
         }
 
-        for (int j = maxY; j <= minY; j++){
-            for (int k = minX; k <= maxX; k++) {
-                Room r = findRoommWithCoordinate(j, k);
-                System.out.println(r != null ? "[Room]" : "   ");
+        for (int y = maxY; y >= minY; y--){
+            for (int x = minX; x <= maxX; x++) {
+                Room i = findRoommWithCoordinate(x, y);
+                System.out.print(i != null ? "[Room]" : "      ");
             }
+            System.out.println();
         }
-
-
     }
-    
+
     public Room findRoommWithCoordinate(int x, int y) {
         for (Room r : rooms) {
             if (r.getXCoordinate() == x &&  r.getYCoordinate() == y) {
