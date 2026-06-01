@@ -5,43 +5,33 @@ package Praktikum_3;
 // (powered by Fernflower decompiler)
 //
 
-class Spiel {
+class Game {
     private Parser parser;
-    private Raum aktuellerRaum;
+    private Map map;
+    private Room aktuellerRaum;
 
     public static void main(String[] args) {
-        Spiel spiel = new Spiel();
+        Game spiel = new Game();
         spiel.spielen();
     }
 
-    public Spiel() {
+    public Game() {
         this.raeumeAnlegen();
         this.parser = new Parser();
     }
 
     private void raeumeAnlegen() {
-        Raum draussen = new Raum("vor dem Haupteingang der Universit�t");
-        Raum hoersaal = new Raum("in einem Vorlesungssaal");
-        Raum cafeteria = new Raum("in der Cafeteria der Uni");
-        Raum labor = new Raum("in einem Rechnerraum");
-        Raum buero = new Raum("im Verwaltungsb�ro der Informatik");
-        draussen.setzeAusgang("east", hoersaal);
-        draussen.setzeAusgang("south", labor);
-        draussen.setzeAusgang("west", cafeteria);
-        hoersaal.setzeAusgang("west", draussen);
-        cafeteria.setzeAusgang("east", draussen);
-        labor.setzeAusgang("north", draussen);
-        labor.setzeAusgang("east", buero);
-        buero.setzeAusgang("west", labor);
-        this.aktuellerRaum = draussen;
+
+
+
     }
 
     public void spielen() {
         this.willkommenstextAusgeben();
 
-        Befehl befehl;
-        for(boolean beendet = false; !beendet; beendet = this.verarbeiteBefehl(befehl)) {
-            befehl = this.parser.liefereBefehl();
+        Command command;
+        for(boolean beendet = false; !beendet; beendet = this.verarbeiteBefehl(command)) {
+            command = this.parser.liefereBefehl();
         }
 
         System.out.println("Danke f�r dieses Spiel. Auf Wiedersehen.");
@@ -56,19 +46,19 @@ class Spiel {
         System.out.println(this.aktuellerRaum.gibLangeBeschreibung());
     }
 
-    private boolean verarbeiteBefehl(Befehl befehl) {
+    private boolean verarbeiteBefehl(Command command) {
         boolean moechteBeenden = false;
-        if (befehl.istUnbekannt()) {
+        if (command.istUnbekannt()) {
             System.out.println("Ich wei� nicht, was Sie meinen...");
             return false;
         } else {
-            String befehlswort = befehl.gibBefehlswort();
+            String befehlswort = command.gibBefehlswort();
             if (befehlswort.equals("help")) {
                 this.hilfstextAusgeben();
             } else if (befehlswort.equals("go")) {
-                this.wechsleRaum(befehl);
+                this.wechsleRaum(command);
             } else if (befehlswort.equals("quit")) {
-                moechteBeenden = this.beenden(befehl);
+                moechteBeenden = this.beenden(command);
             }
 
             return moechteBeenden;
@@ -83,12 +73,12 @@ class Spiel {
         this.parser.zeigeBefehle();
     }
 
-    private void wechsleRaum(Befehl befehl) {
-        if (!befehl.hatZweitesWort()) {
+    private void wechsleRaum(Command command) {
+        if (!command.hatZweitesWort()) {
             System.out.println("Wohin m�chten Sie gehen?");
         } else {
-            String richtung = befehl.gibZweitesWort();
-            Raum naechsterRaum = this.aktuellerRaum.gibAusgang(richtung);
+            String richtung = command.gibZweitesWort();
+            Room naechsterRaum = this.aktuellerRaum.gibAusgang(richtung);
             if (naechsterRaum == null) {
                 System.out.println("Dort ist keine T�r!");
             } else {
@@ -99,8 +89,8 @@ class Spiel {
         }
     }
 
-    private boolean beenden(Befehl befehl) {
-        if (befehl.hatZweitesWort()) {
+    private boolean beenden(Command command) {
+        if (command.hatZweitesWort()) {
             System.out.println("Was soll beendet werden?");
             return false;
         } else {

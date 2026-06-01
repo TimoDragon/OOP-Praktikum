@@ -11,12 +11,12 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 class Parser {
-    private Befehlswoerter befehle = new Befehlswoerter();
+    private Commands befehle = new Commands();
 
     public Parser() {
     }
 
-    public Befehl liefereBefehl() {
+    public Command liefereBefehl() {
         String eingabezeile = "";
         System.out.print("> ");
         BufferedReader eingabe = new BufferedReader(new InputStreamReader(System.in));
@@ -42,7 +42,7 @@ class Parser {
             wort2 = null;
         }
 
-        return this.befehle.istBefehl(wort1) ? new Befehl(wort1, wort2) : new Befehl((String)null, wort2);
+        return this.befehle.istBefehl(wort1) ? new Command(wort1, wort2) : new Command((String)null, wort2);
     }
 
     public void zeigeBefehle() {

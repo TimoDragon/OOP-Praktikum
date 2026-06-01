@@ -5,11 +5,11 @@ package Praktikum_3;
 // (powered by Fernflower decompiler)
 //
 
-class Befehl {
+class Command {
     private String befehlswort;
     private String zweitesWort;
 
-    public Befehl(String erstesWort, String zweitesWort) {
+    public Command(String erstesWort, String zweitesWort) {
         this.befehlswort = erstesWort;
         this.zweitesWort = zweitesWort;
     }

@@ -5,10 +5,10 @@ package Praktikum_3;
 // (powered by Fernflower decompiler)
 //
 
-class Befehlswoerter {
+class Commands {
     private static final String[] gueltigeBefehle = new String[]{"go", "quit", "help"};
 
-    public Befehlswoerter() {
+    public Commands() {
     }
 
     public boolean istBefehl(String eingabe) {
