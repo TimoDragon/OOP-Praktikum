@@ -1,16 +1,19 @@
 package Praktikum_3;
 
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
+import Praktikum_3.commands.Command;
+import Praktikum_3.enemy.Antivirus;
+import Praktikum_3.enemy.EnemyVirus;
+import Praktikum_3.enemy.PcOwner;
+import Praktikum_3.map.Direction;
+import Praktikum_3.map.Map;
+import Praktikum_3.map.Room;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class Game {
-    private Parser parser;
-    private Map map;
+public class Game {
+    private Parser parser = new Parser();
+    private Map map = new Map();
     private Room aktuellerRaum;
 
     public static void main(String[] args) {
@@ -19,57 +22,68 @@ class Game {
     }
 
     public Game() {
-        this.map = new Map(this.raeumeAnlegen());
-        this.parser = new Parser();
+        this.raeumeAnlegen();
     }
 
-    private List<Room> raeumeAnlegen() {
-        List<Room> rooms = new ArrayList<>();
-        Room start = new Room("Test1", 0 , 0);
-        this.aktuellerRaum = start;
+    private void raeumeAnlegen() {
+        Room mainboard = map.addRoom(new Room("MBD", 0 , 0));
+        this.aktuellerRaum = mainboard;
 
-        Room r2 = new Room("Test1");
-        Room r3 = new Room("Test1");
-        Room r4 = new Room("Test1");
+        Room cpu = map.addRoom(new Room("CPU"));
+        Room ram = map.addRoom(new Room("RAM"));
+        Room ssd = map.addRoom(new Room("SSD"));
+        Room hdd = map.addRoom(new Room("HDD"));
+        Room gpu = map.addRoom(new Room("GPU"));
+        Room screen = map.addRoom(new Room("SCR"));
+        Room lan = map.addRoom(new Room("LAN"));
 
-        start.setzeAusgang("north", r2);
-        start.setzeAusgang("east", r3);
-        start.setzeAusgang("west",r4);
+        Room mbdCpuC = map.addRoom(new Room("CBL"));
+        Room cpuRamC = map.addRoom(new Room("CBL"));
+        Room mbdSsdC = map.addRoom(new Room("CBL"));
+        Room ssdHddC = map.addRoom(new Room("CBL"));
+        Room cpuGpuC = map.addRoom(new Room("CBL"));
+        Room gpuScreenC = map.addRoom(new Room("CBL"));
+        Room mbdLanC = map.addRoom(new Room("CBL"));
 
+        mainboard.setzeAusgang(Direction.NORTH, mbdCpuC);
+        mainboard.setzeAusgang(Direction.EAST, mbdSsdC);
+        mainboard.setzeAusgang(Direction.SOUTH, cpuGpuC);
+        mainboard.setzeAusgang(Direction.WEST, mbdLanC);
 
-        Room r5 = new Room("Test1");
-        Room r6 = new Room("Test1");
-        r4.setzeAusgang("west", r5);
-        r5.setzeAusgang("west", r6);
+        mbdCpuC.setzeAusgang(Direction.NORTH, cpu);
 
+        cpu.setzeAusgang(Direction.EAST, cpuRamC);
+        cpuRamC.setzeAusgang(Direction.EAST, ram);
 
-        Room r7 = new Room("Test1");
-        Room r8 = new Room("Test1");
+        mbdSsdC.setzeAusgang(Direction.EAST, ssd);
 
-        r6.setzeAusgang("north",r7);
-        r7.setzeAusgang("north",r8);
+        ssd.setzeAusgang(Direction.EAST, ssdHddC);
+        ssdHddC.setzeAusgang(Direction.NORTH, hdd);
 
-        rooms.add(start);
-        rooms.add(r2);
-        rooms.add(r3);
-        rooms.add(r4);
-        rooms.add(r5);
-        rooms.add(r6);
-        rooms.add(r7);
-        rooms.add(r8);
+        cpuGpuC.setzeAusgang(Direction.SOUTH, gpu);
+        gpu.setzeAusgang(Direction.EAST, gpuScreenC);
+        gpuScreenC.setzeAusgang(Direction.SOUTH, screen);
 
-        return rooms;
+        mbdLanC.setzeAusgang(Direction.WEST, lan);
+
+        ram.setEnemy(new Antivirus("Windows Defender"));
+        screen.setEnemy(new PcOwner(""));
+        lan.setEnemy(new EnemyVirus("Fortnite V-Bucks.exe"));
+
     }
 
     public void spielen() {
         this.willkommenstextAusgeben();
 
         Command command;
-        for(boolean beendet = false; !beendet; beendet = this.verarbeiteBefehl(command)) {
+        while (true) {
             command = this.parser.liefereBefehl();
-        }
 
-        System.out.println("Danke für dieses Spiel. Auf Wiedersehen.");
+            if (this.verarbeiteBefehl(command)) {
+                System.out.println("Danke für dieses Spiel. Auf Wiedersehen.");
+                break;
+            }
+        }
     }
 
     private void willkommenstextAusgeben() {
@@ -83,54 +97,63 @@ class Game {
 
     private boolean verarbeiteBefehl(Command command) {
         boolean moechteBeenden = false;
-        if (command.istUnbekannt()) {
-            System.out.println("Ich wei� nicht, was Sie meinen...");
-            return false;
-        } else {
-            String befehl = command.gibBefehlswort();
-            if (befehl.equals("help")) {
-                this.hilfstextAusgeben();
-            } else if (befehl.equals("go")) {
-                this.wechsleRaum(command);
-            } else if (befehl.equals("quit")) {
-                moechteBeenden = this.beenden(command);
-            } else if (befehl.equals("map")) {
-                this.map.printMap();
-            }
-            return moechteBeenden;
+
+        String befehl = command.getCommand();
+
+        switch (befehl) {
+            case "help" -> this.hilfstextAusgeben();
+            case "go" -> this.wechsleRaum(command);
+            case "quit" -> moechteBeenden = this.beenden(command);
+            case "map" -> this.map.printMap(aktuellerRaum);
+            default -> System.out.println("Ich weiß nicht, was Sie meinen...");
         }
+
+        return moechteBeenden;
     }
 
     private void hilfstextAusgeben() {
         System.out.println("Sie haben sich verlaufen. Sie sind allein.");
-        System.out.println("Sie irren auf dem Unigel�nde herum.");
+        System.out.println("Sie irren auf dem Unigelände herum.");
         System.out.println();
-        System.out.println("Ihnen stehen folgende Befehle zur Verf�gung:");
+        System.out.println("Ihnen stehen folgende Befehle zur Verfügung:");
         this.parser.zeigeBefehle();
     }
 
     private void wechsleRaum(Command command) {
-        if (!command.hatZweitesWort()) {
-            System.out.println("Wohin m�chten Sie gehen?");
-        } else {
-            String richtung = command.gibZweitesWort();
-            Room naechsterRaum = this.aktuellerRaum.gibAusgang(richtung);
+        if (!command.hasArgument()) {
+            System.out.println("Wohin möchten Sie gehen?");
+            return;
+        }
+
+        try {
+            Direction direction = Direction.valueOf(command.getArgument().toUpperCase());
+
+            Room naechsterRaum = this.aktuellerRaum.gibAusgang(direction);
+
             if (naechsterRaum == null) {
-                System.out.println("Dort ist keine T�r!");
-            } else {
-                this.aktuellerRaum = naechsterRaum;
-                System.out.println(this.aktuellerRaum.gibLangeBeschreibung());
+                System.out.println("Dort ist keine Tür!");
+                return;
             }
 
+            this.aktuellerRaum = naechsterRaum;
+
+            System.out.println(this.aktuellerRaum.gibLangeBeschreibung());
+            if (this.aktuellerRaum.getEnemy() != null) {
+
+            }
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Das ist keine Richtung!");
         }
     }
 
     private boolean beenden(Command command) {
-        if (command.hatZweitesWort()) {
+        boolean hasArgument = command.hasArgument();
+
+        if (!hasArgument) {
             System.out.println("Was soll beendet werden?");
-            return false;
-        } else {
-            return true;
         }
+
+        return hasArgument;
     }
 }

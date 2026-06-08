@@ -1,16 +1,14 @@
 package Praktikum_3;
 
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
+import Praktikum_3.commands.Command;
+import Praktikum_3.commands.Commands;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-class Parser {
+public class Parser {
     private Commands befehle = new Commands();
 
     public Parser() {

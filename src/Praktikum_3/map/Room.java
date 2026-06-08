@@ -1,17 +1,14 @@
-package Praktikum_3;
+package Praktikum_3.map;
 
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
+import Praktikum_3.enemy.Enemy;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-class Room {
-    private String beschreibung;
-    private HashMap ausgaenge;
+public class Room {
+    private final String name;
+    private HashMap<Direction, Room> ausgaenge = new HashMap<>();
     private Enemy enemy;
     private int yCoordinate;
     private int xCoordinate;
@@ -19,11 +16,10 @@ class Room {
 
     /**
      *
-     * @param beschreibung
+     * @param name
      */
-    public Room(String beschreibung) {
-        this.beschreibung = beschreibung;
-        this.ausgaenge = new HashMap();
+    public Room(String name) {
+        this.name = name;
     }
 
     /**
@@ -33,41 +29,44 @@ class Room {
      * @param x
      */
     public Room(String beschreibung, int y, int x) {
-        this.beschreibung = beschreibung;
-        this.ausgaenge = new HashMap();
+        this.name = beschreibung;
         this.xCoordinate = x;
         this.yCoordinate = y;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     /**
      *
-     * @param richtung
+     * @param direction
      * @param nachbar
      */
-    public void setzeAusgang(String richtung, Room nachbar) {
-        switch (richtung) {
-            case "north":
+    public void setzeAusgang(Direction direction, Room nachbar) {
+        switch (direction) {
+            case NORTH:
                 nachbar.setXCoordinate(this.xCoordinate);
                 nachbar.setYCoordinate(this.yCoordinate + 1);
                 break;
 
-            case "south":
+            case SOUTH:
                 nachbar.setXCoordinate(this.xCoordinate);
                 nachbar.setYCoordinate(this.yCoordinate - 1);
                 break;
 
-            case "west":
+            case WEST:
                 nachbar.setXCoordinate(this.xCoordinate - 1);
                 nachbar.setYCoordinate(this.yCoordinate);
                 break;
 
-            case "east":
+            case EAST:
                 nachbar.setXCoordinate(this.xCoordinate + 1);
                 nachbar.setYCoordinate(this.yCoordinate);
                 break;
         }
 
-        this.ausgaenge.put(richtung, nachbar);
+        this.ausgaenge.put(direction, nachbar);
     }
 
 
@@ -76,7 +75,7 @@ class Room {
      * @return
      */
     public String gibKurzbeschreibung() {
-        return this.beschreibung;
+        return this.name;
     }
 
     /**
@@ -84,7 +83,7 @@ class Room {
      * @return
      */
     public String gibLangeBeschreibung() {
-        return "Sie sind " + this.beschreibung + ".\n" + this.gibAusgaengeAlsString();
+        return "Sie sind im " + this.name + ".\n" + this.gibAusgaengeAlsString();
     }
 
     /**
@@ -103,18 +102,18 @@ class Room {
 
     /**
      *
-     * @param richtung
+     * @param direction
      * @return
      */
-    public Room gibAusgang(String richtung) {
-        return (Room)this.ausgaenge.get(richtung);
+    public Room gibAusgang(Direction direction) {
+        return this.ausgaenge.get(direction);
     }
 
-    public int getXCoordinate() {
+    public int getX() {
         return xCoordinate;
     }
 
-    public int getYCoordinate() {
+    public int getY() {
         return yCoordinate;
     }
 
@@ -124,5 +123,13 @@ class Room {
 
     public void setYCoordinate(int yCoordinate) {
         this.yCoordinate = yCoordinate;
+    }
+
+    public void setEnemy(Enemy pEnemy) {
+        this.enemy = pEnemy;
+    }
+
+    public Enemy getEnemy() {
+        return this.enemy;
     }
 }
