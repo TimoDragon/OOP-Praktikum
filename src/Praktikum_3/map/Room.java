@@ -1,6 +1,7 @@
 package Praktikum_3.map;
 
 import Praktikum_3.enemy.Enemy;
+import Praktikum_3.items.Item;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,9 +10,11 @@ import java.util.Set;
 public class Room {
     private final String name;
     private HashMap<Direction, Room> ausgaenge = new HashMap<>();
+    private Item item;
     private Enemy enemy;
     private int yCoordinate;
     private int xCoordinate;
+    private Direction freierAusgang;
 
 
     /**
@@ -125,11 +128,24 @@ public class Room {
         this.yCoordinate = yCoordinate;
     }
 
-    public void setEnemy(Enemy pEnemy) {
+    public void setEnemy(Enemy pEnemy, Direction freierAusgang) {
         this.enemy = pEnemy;
+        this.freierAusgang = freierAusgang;
     }
 
     public Enemy getEnemy() {
         return this.enemy;
+    }
+
+    public Direction getFreierAusgang() {
+        return this.freierAusgang;
+    }
+
+    public void setItem(Item pItem) {
+        this.item = pItem;
+    }
+
+    public Item getItem() {
+        return this.item;
     }
 }

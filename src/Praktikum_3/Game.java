@@ -1,22 +1,24 @@
 package Praktikum_3;
 
 import Praktikum_3.commands.Command;
-import Praktikum_3.enemy.Antivirus;
-import Praktikum_3.enemy.EnemyVirus;
-import Praktikum_3.enemy.PcOwner;
+import Praktikum_3.enemy.Enemy;
 import Praktikum_3.items.Item;
+import Praktikum_3.items.StickyNote;
 import Praktikum_3.items.Weapon;
 import Praktikum_3.map.Direction;
 import Praktikum_3.map.Map;
 import Praktikum_3.map.Room;
 
-public class Game {
+import java.util.Random;
+import java.util.Scanner;
 
-    private User user = new User();
-    private Fight fight;
+public class Game {
+    private final Random random = new Random();
+    private User user;
     private Parser parser = new Parser();
     private Map map = new Map();
     private Room aktuellerRaum;
+    private boolean unlockedLanPort = false;
 
     public static void main(String[] args) {
         Game spiel = new Game();
@@ -43,39 +45,74 @@ public class Game {
         Room cpuRamC = map.addRoom(new Room("CBL"));
         Room mbdSsdC = map.addRoom(new Room("CBL"));
         Room ssdHddC = map.addRoom(new Room("CBL"));
-        Room cpuGpuC = map.addRoom(new Room("CBL"));
+        Room mbdGpuC = map.addRoom(new Room("CBL"));
         Room gpuScreenC = map.addRoom(new Room("CBL"));
         Room mbdLanC = map.addRoom(new Room("CBL"));
 
         mainboard.setzeAusgang(Direction.NORTH, mbdCpuC);
         mainboard.setzeAusgang(Direction.EAST, mbdSsdC);
-        mainboard.setzeAusgang(Direction.SOUTH, cpuGpuC);
+        mainboard.setzeAusgang(Direction.SOUTH, mbdGpuC);
         mainboard.setzeAusgang(Direction.WEST, mbdLanC);
 
         mbdCpuC.setzeAusgang(Direction.NORTH, cpu);
+        mbdCpuC.setzeAusgang(Direction.SOUTH, mainboard);
 
         cpu.setzeAusgang(Direction.EAST, cpuRamC);
+        cpu.setzeAusgang(Direction.SOUTH, mbdCpuC);
+
         cpuRamC.setzeAusgang(Direction.EAST, ram);
+        cpuRamC.setzeAusgang(Direction.WEST, cpu);
+
+        ram.setzeAusgang(Direction.WEST, cpuRamC);
 
         mbdSsdC.setzeAusgang(Direction.EAST, ssd);
+        mbdSsdC.setzeAusgang(Direction.WEST, mainboard);
 
         ssd.setzeAusgang(Direction.EAST, ssdHddC);
+        ssd.setzeAusgang(Direction.WEST, mbdSsdC);
+
         ssdHddC.setzeAusgang(Direction.NORTH, hdd);
+        ssdHddC.setzeAusgang(Direction.WEST, ssd);
 
-        cpuGpuC.setzeAusgang(Direction.SOUTH, gpu);
+        hdd.setzeAusgang(Direction.SOUTH, ssdHddC);
+
+        mbdGpuC.setzeAusgang(Direction.NORTH, mainboard);
+        mbdGpuC.setzeAusgang(Direction.SOUTH, gpu);
+
+        gpu.setzeAusgang(Direction.NORTH, mbdGpuC);
         gpu.setzeAusgang(Direction.EAST, gpuScreenC);
-        gpuScreenC.setzeAusgang(Direction.SOUTH, screen);
 
+        gpuScreenC.setzeAusgang(Direction.SOUTH, screen);
+        gpuScreenC.setzeAusgang(Direction.WEST, gpu);
+
+        screen.setzeAusgang(Direction.NORTH, gpuScreenC);
+
+        mbdLanC.setzeAusgang(Direction.EAST, mainboard);
         mbdLanC.setzeAusgang(Direction.WEST, lan);
 
-        ram.setEnemy(new Antivirus("Windows Defender"));
-        screen.setEnemy(new PcOwner(""));
-        lan.setEnemy(new EnemyVirus("Fortnite V-Bucks.exe"));
+        lan.setzeAusgang(Direction.EAST, mbdLanC);
+        lan.setzeAusgang(Direction.WEST, new Room("exit"));
 
+        StickyNote stickyNote = new StickyNote("Passwort: ******");
+
+        ram.setEnemy(new Enemy("Windows Defender", 60, 120, 10), Direction.WEST);
+        screen.setEnemy(new Enemy("Layer 8", 20, 80, 5, stickyNote), Direction.NORTH);
+        lan.setEnemy(new Enemy("Fortnite V-Bucks.exe", 10, 60, 20), Direction.EAST);
     }
 
     public void spielen() {
         this.willkommenstextAusgeben();
+
+        Scanner scanner = new Scanner(System.in);
+        String name = scanner.nextLine();
+
+        System.out.println("Hallo " + name + "!\n");
+
+        System.out.println("Tippen sie 'help', wenn Sie Hilfe brauchen.");
+        System.out.println();
+        System.out.println(this.aktuellerRaum.gibLangeBeschreibung());
+
+        this.user = new User(name);
 
         Command command;
         while (true) {
@@ -92,9 +129,7 @@ public class Game {
         System.out.println();
         System.out.println("Willkommen zu Zuul!");
         System.out.println("Zuul ist ein neues, unglaublich langweiliges Spiel.");
-        System.out.println("Tippen sie 'help', wenn Sie Hilfe brauchen.");
-        System.out.println();
-        System.out.println(this.aktuellerRaum.gibLangeBeschreibung());
+        System.out.println("Bitte gebe deinen Namen ein:");
     }
 
     private boolean verarbeiteBefehl(Command command) {
@@ -102,17 +137,21 @@ public class Game {
 
         String befehl = command.getCommand();
 
+        if (befehl == null) {
+            System.out.println("Ich weiß nicht, was Sie meinen...");
+            return moechteBeenden;
+        }
+
         switch (befehl) {
             case "help" -> this.hilfstextAusgeben();
             case "go" -> this.wechsleRaum(command);
             case "quit" -> moechteBeenden = this.beenden(command);
             case "map" -> this.map.printMap(aktuellerRaum);
-            case "attack" -> {
-                Item item = user.getInventory().getItem((Integer.parseInt(command.getArgument())));
-                if (item instanceof Weapon weapon) {
-                    this.kampf(weapon);
-                }
-            }
+            case "attack" -> attack(command);
+            case "use" -> useItem(command);
+            case "inv" -> this.user.getInventory().printInventory();
+            case "collect" -> collectItem();
+            case "look" -> look();
             default -> System.out.println("Ich weiß nicht, was Sie meinen...");
         }
 
@@ -120,10 +159,12 @@ public class Game {
     }
 
     private void hilfstextAusgeben() {
-        System.out.println("Sie haben sich verlaufen. Sie sind allein.");
-        System.out.println("Sie irren auf dem Unigelände herum.");
-        System.out.println();
-        System.out.println("Ihnen stehen folgende Befehle zur Verfügung:");
+        System.out.println("Sie befinden sich im: " + this.aktuellerRaum.getName());
+        if (this.aktuellerRaum.getEnemy() == null) {
+            System.out.println("Es befindet sich kein Gegner im Raum");
+        } else {
+            System.out.println("Gegner im Raum: " + this.aktuellerRaum.getEnemy().getName());
+        }
         this.parser.zeigeBefehle();
     }
 
@@ -136,6 +177,11 @@ public class Game {
         try {
             Direction direction = Direction.valueOf(command.getArgument().toUpperCase());
 
+            if (this.aktuellerRaum.getEnemy() != null && !direction.equals(this.aktuellerRaum.getFreierAusgang())) {
+                System.out.println("Diese Richtung ist vom Gegner versperrt. Besiege entweder den Gegner oder nutze die letzte Tür.");
+                return;
+            }
+
             Room naechsterRaum = this.aktuellerRaum.gibAusgang(direction);
 
             if (naechsterRaum == null) {
@@ -146,36 +192,140 @@ public class Game {
             this.aktuellerRaum = naechsterRaum;
 
             System.out.println(this.aktuellerRaum.gibLangeBeschreibung());
+
             if (this.aktuellerRaum.getEnemy() != null) {
-
+                System.out.println("Gegner im Raum: " + this.aktuellerRaum.getEnemy().getName());
             }
-
         } catch (IllegalArgumentException e) {
             System.out.println("Das ist keine Richtung!");
         }
     }
 
-    private boolean kampf(Weapon w) {
-        if (this.fight != null) {
-            fight = new Fight(user, aktuellerRaum.getEnemy());
+    private void attack(Command command) {
+        Enemy enemy = this.aktuellerRaum.getEnemy();
+
+        if (enemy == null) {
+            System.out.println("In diesem Raum befindet sich kein Gegner!");
+            return;
         }
 
-        switch (arg) {
-
+        if (!command.hasArgument()) {
+            System.out.println("Wo Waffe?");
+            return;
         }
 
-        if (fight.isUserWinner()) {
-            aktuellerRaum.setEnemy(null);
-            System.out.println("Sie haben den" + this.aktuellerRaum.getEnemy().getName() + "besiegt!");
-            return false;
+        Integer slot = null;
+        try {
+            slot = Integer.parseInt(command.getArgument());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ungültiger Slot!");
         }
 
-        this.user = null;
+        if (slot == null) {
+            return;
+        }
 
-        System.out.println("Sie haben Verloren!");
+        if (slot < 0 || slot >= user.getInventory().getItems().size()) {
+            System.out.println("Ungültiger Slot!");
+            return;
+        }
 
-        return true;
+        Item item = user.getInventory().getItem(slot);
+        if (!(item instanceof Weapon weapon)) {
+            System.out.println("Das ist keine Waffe!");
+            return;
+        }
 
+        System.out.println( enemy.getName() +  " Hat noch: \nFirewall: " + enemy.getFirewall()+ "\nSystemintegrity: " +  enemy.getSystemIntegrity());
+
+        if (random.nextFloat() > 0.75f) {
+            System.out.println("Kein Treffer!");
+        } else {
+            enemy.takeDamage(weapon.getDamage());
+            System.out.println("Treffer! " + enemy.getName() + " hat " + weapon.getDamage() + " Schaden erlitten");
+        }
+
+        if (enemy.isDead()) {
+            System.out.println("Sie haben den " + this.aktuellerRaum.getEnemy().getName() + " besiegt!");
+
+            if (enemy.getItem() != null) {
+                this.aktuellerRaum.setItem(enemy.getItem());
+                System.out.println("Der Gegner hat ein Item fallen gelassen.");
+            }
+
+            aktuellerRaum.setEnemy(null, null);
+
+            return;
+        }
+
+        try {
+            Thread.sleep(3000);
+            this.enemyAttack();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void enemyAttack() {
+        Enemy enemy = this.aktuellerRaum.getEnemy();
+
+        if (random.nextFloat() > 0.5f) {
+            System.out.println("Der Gegner hat seinen Angriff verfehlt!");
+            return;
+        }
+
+        int damage = enemy.getAttackDamage();
+        user.takeDamage(damage);
+
+        System.out.println("Der Gegner hat seinen Angriff getroffen. Du erleidest " + damage + " Schaden");
+
+        if (user.isDead()) {
+            System.out.println("Du bist Gestorben!");
+            System.exit(0);
+        }
+    }
+
+    public void useItem(Command command) {
+        if (!command.hasArgument()) {
+            System.out.println("Was soll benutzt werden?");
+            return;
+        }
+
+        int slot = Integer.parseInt(command.getArgument());
+
+        if (slot < 0 || slot >= user.getInventory().getItems().size()) {
+            System.out.println("Ungültiger Slot!");
+            return;
+        }
+
+        Item item = user.getInventory().getItem(slot);
+
+        if (!(item instanceof StickyNote note)) {
+            System.out.println("Dieses Item kannst du nicht benutzen!");
+            return;
+        }
+    }
+
+    public void collectItem() {
+        if(this.aktuellerRaum.getItem() == null) {
+            System.out.println("Kein Item im Raum");
+            return;
+        }
+
+        Item item = this.aktuellerRaum.getItem();
+        user.getInventory().addItem(item);
+        this.aktuellerRaum.setItem(null);
+    }
+
+    private void look() {
+        Item item = this.aktuellerRaum.getItem();
+
+        if (item == null) {
+            System.out.println("Kein Item im Raum.");
+            return;
+        }
+
+        System.out.println("Item im Raum: " + item.getName());
     }
 
     private boolean beenden(Command command) {

@@ -1,13 +1,16 @@
 package Praktikum_3;
 
+import Praktikum_3.items.Weapon;
+
 public class User {
     private String name;
     private Inventory inventory = new Inventory();
-    private int hp;
-
+    private int hp = 200;
 
     public User(String pName) {
         this.name = pName;
+
+        getInventory().addItem(new Weapon("Digitale Faust", 50));
     }
 
     public Inventory getInventory() {

@@ -1,7 +1,7 @@
 package Praktikum_3.commands;
 
 public class Commands {
-    private static final String[] gueltigeBefehle = new String[]{"go", "quit", "help", "map", "attack"};
+    private static final String[] gueltigeBefehle = new String[]{"go", "quit", "help", "map", "attack", "use" , "inv" , "collect" , "look"};
 
     public boolean istBefehl(String eingabe) {
         for (String s : gueltigeBefehle) {

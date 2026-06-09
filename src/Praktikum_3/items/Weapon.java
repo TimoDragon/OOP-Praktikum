@@ -1,6 +1,6 @@
 package Praktikum_3.items;
 
-public abstract class Weapon extends Item {
+public class Weapon extends Item {
     private final int damage;
 
     public Weapon(String name, int dmg) {
@@ -8,7 +8,7 @@ public abstract class Weapon extends Item {
         this.damage = dmg;
     }
 
-    public int getDmg() {
+    public int getDamage() {
         return this.damage;
     }
 }
