@@ -4,14 +4,16 @@ import Praktikum_3.commands.Command;
 import Praktikum_3.enemy.Antivirus;
 import Praktikum_3.enemy.EnemyVirus;
 import Praktikum_3.enemy.PcOwner;
+import Praktikum_3.items.Item;
+import Praktikum_3.items.Weapon;
 import Praktikum_3.map.Direction;
 import Praktikum_3.map.Map;
 import Praktikum_3.map.Room;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Game {
+
+    private User user = new User();
+    private Fight fight;
     private Parser parser = new Parser();
     private Map map = new Map();
     private Room aktuellerRaum;
@@ -105,6 +107,12 @@ public class Game {
             case "go" -> this.wechsleRaum(command);
             case "quit" -> moechteBeenden = this.beenden(command);
             case "map" -> this.map.printMap(aktuellerRaum);
+            case "attack" -> {
+                Item item = user.getInventory().getItem((Integer.parseInt(command.getArgument())));
+                if (item instanceof Weapon weapon) {
+                    this.kampf(weapon);
+                }
+            }
             default -> System.out.println("Ich weiß nicht, was Sie meinen...");
         }
 
@@ -145,6 +153,29 @@ public class Game {
         } catch (IllegalArgumentException e) {
             System.out.println("Das ist keine Richtung!");
         }
+    }
+
+    private boolean kampf(Weapon w) {
+        if (this.fight != null) {
+            fight = new Fight(user, aktuellerRaum.getEnemy());
+        }
+
+        switch (arg) {
+
+        }
+
+        if (fight.isUserWinner()) {
+            aktuellerRaum.setEnemy(null);
+            System.out.println("Sie haben den" + this.aktuellerRaum.getEnemy().getName() + "besiegt!");
+            return false;
+        }
+
+        this.user = null;
+
+        System.out.println("Sie haben Verloren!");
+
+        return true;
+
     }
 
     private boolean beenden(Command command) {
