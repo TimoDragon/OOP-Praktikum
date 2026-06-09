@@ -95,7 +95,7 @@ public class Game {
 
         StickyNote stickyNote = new StickyNote("Passwort: ******");
 
-        ram.setEnemy(new Enemy("Windows Defender", 60, 120, 10), Direction.WEST);
+        cpu.setEnemy(new Enemy("Windows Defender", 60, 120, 10), Direction.WEST);
         screen.setEnemy(new Enemy("Layer 8", 20, 80, 5, stickyNote), Direction.NORTH);
         lan.setEnemy(new Enemy("Fortnite V-Bucks.exe", 10, 60, 20), Direction.EAST);
     }
@@ -187,6 +187,16 @@ public class Game {
             if (naechsterRaum == null) {
                 System.out.println("Dort ist keine Tür!");
                 return;
+            }
+
+            if (naechsterRaum.getName().equals("exit")) {
+                if (!unlockedLanPort) {
+                    System.out.println("Der Ausgang ist verschlossen. Du musst erst die Firewall deaktivieren.");
+                    return;
+                }
+
+                System.out.println("Du hast erfolgreich den PC verlassen und breitest dich auf andere Geräte aus. Das Spiel ist vorbei.");
+                System.exit(0);
             }
 
             this.aktuellerRaum = naechsterRaum;
@@ -300,7 +310,14 @@ public class Game {
 
         Item item = user.getInventory().getItem(slot);
 
-        if (!(item instanceof StickyNote note)) {
+        if (item instanceof StickyNote note && this.aktuellerRaum.getName().equalsIgnoreCase("RAM")) {
+            this.unlockedLanPort = true;
+            user.getInventory().getItems().remove(item);
+            System.out.println("Du hast erfolgreich Root zugriff erlangt und die Firewall deaktiviert.");
+            return;
+        }
+
+        if ((item instanceof Weapon weapon)) {
             System.out.println("Dieses Item kannst du nicht benutzen!");
             return;
         }
@@ -314,6 +331,7 @@ public class Game {
 
         Item item = this.aktuellerRaum.getItem();
         user.getInventory().addItem(item);
+        System.out.println(item.getName() + " eingesammelt!");
         this.aktuellerRaum.setItem(null);
     }
 
