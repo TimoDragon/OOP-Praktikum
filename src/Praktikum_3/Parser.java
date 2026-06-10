@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Parser {
-    private Commands befehle = new Commands();
+    private Commands commands = new Commands();
 
     public Parser() {
     }
@@ -40,10 +40,15 @@ public class Parser {
             wort2 = null;
         }
 
-        return this.befehle.istBefehl(wort1) ? new Command(wort1, wort2) : new Command((String)null, wort2);
+        return this.commands.istBefehl(wort1) ? new Command(wort1, wort2) : new Command((String)null, wort2);
     }
 
     public void zeigeBefehle() {
-        this.befehle.alleAusgeben();
+        this.commands.alleAusgeben();
     }
+
+    public Commands getCommand() {
+        return commands;
+    }
+
 }

@@ -155,6 +155,8 @@ public class Game {
             default -> System.out.println("Ich weiß nicht, was Sie meinen...");
         }
 
+        System.out.println("\nBefehle bis jetzt eingegeben: " + this.parser.getCommand().getCommandCount());
+
         return moechteBeenden;
     }
 
@@ -166,6 +168,7 @@ public class Game {
             System.out.println("Gegner im Raum: " + this.aktuellerRaum.getEnemy().getName());
         }
         this.parser.zeigeBefehle();
+
     }
 
     private void wechsleRaum(Command command) {

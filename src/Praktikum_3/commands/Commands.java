@@ -2,10 +2,12 @@ package Praktikum_3.commands;
 
 public class Commands {
     private static final String[] gueltigeBefehle = new String[]{"go", "quit", "help", "map", "attack", "use" , "inv" , "collect" , "look"};
+    private int commandCount = 0;
 
     public boolean istBefehl(String eingabe) {
         for (String s : gueltigeBefehle) {
             if (s.equalsIgnoreCase(eingabe)) {
+                commandCount++;
                 return true;
             }
         }
@@ -19,6 +21,10 @@ public class Commands {
         }
 
         System.out.println();
+    }
+
+    public int getCommandCount() {
+        return commandCount;
     }
 }
 
