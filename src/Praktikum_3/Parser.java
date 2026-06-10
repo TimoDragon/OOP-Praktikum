@@ -11,9 +11,16 @@ import java.util.StringTokenizer;
 public class Parser {
     private Commands commands = new Commands();
 
+    /**
+     * Default Konstuktor
+     */
     public Parser() {
     }
 
+    /**
+     * Gibt den Command zurpck
+     * @return
+     */
     public Command liefereBefehl() {
         String eingabezeile = "";
         System.out.print("> ");
@@ -43,10 +50,17 @@ public class Parser {
         return this.commands.istBefehl(wort1) ? new Command(wort1, wort2) : new Command((String)null, wort2);
     }
 
+    /**
+     * Gibt alle Befehle aus
+     */
     public void zeigeBefehle() {
         this.commands.alleAusgeben();
     }
 
+    /**
+     * Gibt den Command zurück
+     * @return
+     */
     public Commands getCommand() {
         return commands;
     }

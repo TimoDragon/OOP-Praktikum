@@ -8,6 +8,7 @@ import Praktikum_3.items.Weapon;
 import Praktikum_3.map.Direction;
 import Praktikum_3.map.Map;
 import Praktikum_3.map.Room;
+import Praktikum_3.user.User;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -25,10 +26,16 @@ public class Game {
         spiel.spielen();
     }
 
+    /**
+     * Konstruktor der Klasse Game
+     */
     public Game() {
         this.raeumeAnlegen();
     }
 
+    /**
+     * Methode zum anlegen der Räume
+     */
     private void raeumeAnlegen() {
         Room mainboard = map.addRoom(new Room("MBD", 0 , 0));
         this.aktuellerRaum = mainboard;
@@ -100,6 +107,9 @@ public class Game {
         lan.setEnemy(new Enemy("Fortnite V-Bucks.exe", 10, 60, 20), Direction.EAST);
     }
 
+    /**
+     * Game
+     */
     public void spielen() {
         this.willkommenstextAusgeben();
 
@@ -125,6 +135,9 @@ public class Game {
         }
     }
 
+    /**
+     * Gibt den Willkommenstext aus
+     */
     private void willkommenstextAusgeben() {
         System.out.println();
         System.out.println("Willkommen zu Zuul!");
@@ -132,6 +145,11 @@ public class Game {
         System.out.println("Bitte gebe deinen Namen ein:");
     }
 
+    /**
+     * Befehlsverarbeitung
+     * @param command der übrergebene Befehl der überprüft werden soll
+     * @return boolean
+     */
     private boolean verarbeiteBefehl(Command command) {
         boolean moechteBeenden = false;
 
@@ -160,6 +178,9 @@ public class Game {
         return moechteBeenden;
     }
 
+    /**
+     * Gibt den hilfe Text aus
+     */
     private void hilfstextAusgeben() {
         System.out.println("Sie befinden sich im: " + this.aktuellerRaum.getName());
         if (this.aktuellerRaum.getEnemy() == null) {
@@ -171,6 +192,10 @@ public class Game {
 
     }
 
+    /**
+     * Methode zum wechseln des Raums
+     * @param command Command
+     */
     private void wechsleRaum(Command command) {
         if (!command.hasArgument()) {
             System.out.println("Wohin möchten Sie gehen?");
@@ -215,6 +240,10 @@ public class Game {
         }
     }
 
+    /**
+     * Attacke des User
+     * @param command Command zum angreifen
+     */
     private void attack(Command command) {
         Enemy enemy = this.aktuellerRaum.getEnemy();
 
@@ -280,6 +309,9 @@ public class Game {
         }
     }
 
+    /**
+     * Attacke des Gegners
+     */
     private void enemyAttack() {
         Enemy enemy = this.aktuellerRaum.getEnemy();
 
@@ -300,6 +332,10 @@ public class Game {
         }
     }
 
+    /**
+     * benutzen des Items aus dem Inventar
+     * @param command Command
+     */
     public void useItem(Command command) {
         if (!command.hasArgument()) {
             System.out.println("Was soll benutzt werden?");
@@ -328,6 +364,9 @@ public class Game {
         }
     }
 
+    /**
+     * Einsammeln des Items im Raum, wenn vorhanden
+     */
     public void collectItem() {
         if(this.aktuellerRaum.getItem() == null) {
             System.out.println("Kein Item im Raum");
@@ -344,6 +383,9 @@ public class Game {
         }
     }
 
+    /**
+     * Gibt auf der Kommandozeile aus, ob sich ein Item im Raum befindet oder nicht
+     */
     private void look() {
         Item item = this.aktuellerRaum.getItem();
 
@@ -355,6 +397,11 @@ public class Game {
         System.out.println("Item im Raum: " + item.getName());
     }
 
+    /**
+     * gibt zurück, wenn der richtige Command zum beenden des Spiels übergeben wird
+     * @param command der übergebene Command
+     * @return boolean
+     */
     private boolean beenden(Command command) {
         boolean hasArgument = command.hasArgument();
 
