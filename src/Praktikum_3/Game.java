@@ -95,7 +95,7 @@ public class Game {
 
         StickyNote stickyNote = new StickyNote("Passwort: ******");
 
-        cpu.setEnemy(new Enemy("Windows Defender", 60, 120, 10), Direction.WEST);
+        cpu.setEnemy(new Enemy("Windows Defender", 60, 120, 10), Direction.EAST);
         screen.setEnemy(new Enemy("Layer 8", 20, 80, 5, stickyNote), Direction.NORTH);
         lan.setEnemy(new Enemy("Fortnite V-Bucks.exe", 10, 60, 20), Direction.EAST);
     }
@@ -177,17 +177,18 @@ public class Game {
         try {
             Direction direction = Direction.valueOf(command.getArgument().toUpperCase());
 
-            if (this.aktuellerRaum.getEnemy() != null && !direction.equals(this.aktuellerRaum.getFreierAusgang())) {
-                System.out.println("Diese Richtung ist vom Gegner versperrt. Besiege entweder den Gegner oder nutze die letzte Tür.");
-                return;
-            }
-
             Room naechsterRaum = this.aktuellerRaum.gibAusgang(direction);
 
             if (naechsterRaum == null) {
                 System.out.println("Dort ist keine Tür!");
                 return;
             }
+
+            if (this.aktuellerRaum.getEnemy() != null && !direction.equals(this.aktuellerRaum.getFreierAusgang())) {
+                System.out.println("Diese Richtung ist vom Gegner versperrt. Besiege entweder den Gegner oder nutze die letzte Tür.");
+                return;
+            }
+
 
             if (naechsterRaum.getName().equals("exit")) {
                 if (!unlockedLanPort) {
@@ -288,6 +289,7 @@ public class Game {
         user.takeDamage(damage);
 
         System.out.println("Der Gegner hat seinen Angriff getroffen. Du erleidest " + damage + " Schaden");
+        System.out.println(this.user.getName() + " HP: " + this.user.getHP());
 
         if (user.isDead()) {
             System.out.println("Du bist Gestorben!");
@@ -333,6 +335,10 @@ public class Game {
         user.getInventory().addItem(item);
         System.out.println(item.getName() + " eingesammelt!");
         this.aktuellerRaum.setItem(null);
+
+        if (item instanceof StickyNote) {
+            System.out.println("Du hast das Passwort gefunden. Dieses kann im RAM benutzt werden");
+        }
     }
 
     private void look() {

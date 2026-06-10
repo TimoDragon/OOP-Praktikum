@@ -30,4 +30,8 @@ public class User {
     public boolean isDead() {
         return this.hp <= 0;
     }
+
+    public String getName() {
+        return this.name;
+    }
 }
