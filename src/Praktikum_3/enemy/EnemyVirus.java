@@ -8,18 +8,12 @@ public class EnemyVirus extends Enemy{
 
     @Override
     public int getTotalHP() {
-        return 0;
+        return getSystemintegrity();
     }
 
     @Override
     public void takeDamage(int dmg) {
-        setSystemintegrity(-dmg);
+        setSystemintegrity(getSystemintegrity() - dmg);
     }
-
-    @Override
-    public boolean isDead() {
-        return false;
-    }
-
 
 }

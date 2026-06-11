@@ -6,7 +6,6 @@ public class Antivirus extends Enemy{
         super(pName, attackDamage,systemintegrity);
     }
 
-
     @Override
     public int getTotalHP() {
         return getSystemintegrity();
@@ -14,7 +13,7 @@ public class Antivirus extends Enemy{
 
     @Override
     public void takeDamage(int dmg) {
-       setSystemintegrity(-dmg);
+       setSystemintegrity(getSystemintegrity() - dmg);
     }
 
 }

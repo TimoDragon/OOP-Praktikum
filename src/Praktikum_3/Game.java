@@ -106,7 +106,7 @@ public class Game {
 
         StickyNote stickyNote = new StickyNote("Passwort: ******");
 
-        cpu.setEnemy(new Antivirus("Windows Defender", 60, 100), Direction.EAST);
+        cpu.setEnemy(new Antivirus("Windows Defender", 60, 100), Direction.SOUTH);
         screen.setEnemy(new PcUser("Layer 8", 50,100,50 , stickyNote), Direction.NORTH);
         lan.setEnemy(new EnemyVirus("Fortnite V-Bucks.exe", 30, 100), Direction.EAST);
     }

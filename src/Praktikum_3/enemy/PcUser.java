@@ -22,7 +22,7 @@ public class PcUser extends Enemy {
         int rest = Math.max(0, dmg - firewall);
         firewall = Math.max(0, firewall - dmg);
         if (rest > 0) {
-            setSystemintegrity(Math.max(0, getSystemintegrity() - rest));
+            setSystemintegrity(getSystemintegrity() - dmg);
         }
     }
 
