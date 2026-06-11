@@ -134,6 +134,7 @@ public class Game {
 
             if (this.verarbeiteBefehl(command)) {
                 System.out.println("Danke für dieses Spiel. Auf Wiedersehen.");
+                System.out.println("\nBefehle bis jetzt eingegeben: " + this.parser.getCommand().getCommandCount());
                 break;
             }
         }
@@ -176,8 +177,6 @@ public class Game {
             case "look" -> look();
             default -> System.out.println("Ich weiß nicht, was Sie meinen...");
         }
-
-        System.out.println("\nBefehle bis jetzt eingegeben: " + this.parser.getCommand().getCommandCount());
 
         return moechteBeenden;
     }
@@ -229,6 +228,7 @@ public class Game {
                 }
 
                 System.out.println("Du hast erfolgreich den PC verlassen und breitest dich auf andere Geräte aus. Das Spiel ist vorbei.");
+                System.out.println("\nBefehle bis jetzt eingegeben: " + this.parser.getCommand().getCommandCount());
                 System.exit(0);
             }
 
@@ -359,7 +359,7 @@ public class Game {
 
         Item item = user.getInventory().getItem(slot);
 
-        if (item instanceof StickyNote note && this.aktuellerRaum.getName().equalsIgnoreCase("RAM")) {
+        if (item instanceof StickyNote && this.aktuellerRaum.getName().equalsIgnoreCase("RAM")) {
             this.unlockedLanPort = true;
             user.getInventory().getItems().remove(item);
             System.out.println("Du hast erfolgreich Root zugriff erlangt und die Firewall deaktiviert.");
