@@ -1,7 +1,10 @@
 package Praktikum_3;
 
 import Praktikum_3.commands.Command;
+import Praktikum_3.enemy.Antivirus;
 import Praktikum_3.enemy.Enemy;
+import Praktikum_3.enemy.EnemyVirus;
+import Praktikum_3.enemy.PcUser;
 import Praktikum_3.items.Item;
 import Praktikum_3.items.StickyNote;
 import Praktikum_3.items.Weapon;
@@ -82,6 +85,7 @@ public class Game {
         ssdHddC.setzeAusgang(Direction.WEST, ssd);
 
         hdd.setzeAusgang(Direction.SOUTH, ssdHddC);
+        hdd.setItem(new Weapon("Excalibur", 60,1.0f));
 
         mbdGpuC.setzeAusgang(Direction.NORTH, mainboard);
         mbdGpuC.setzeAusgang(Direction.SOUTH, gpu);
@@ -102,9 +106,9 @@ public class Game {
 
         StickyNote stickyNote = new StickyNote("Passwort: ******");
 
-        cpu.setEnemy(new Enemy("Windows Defender", 60, 120, 10), Direction.EAST);
-        screen.setEnemy(new Enemy("Layer 8", 20, 80, 5, stickyNote), Direction.NORTH);
-        lan.setEnemy(new Enemy("Fortnite V-Bucks.exe", 10, 60, 20), Direction.EAST);
+        cpu.setEnemy(new Antivirus("Windows Defender", 60, 100), Direction.EAST);
+        screen.setEnemy(new PcUser("Layer 8", 50,100,50 , stickyNote), Direction.NORTH);
+        lan.setEnemy(new EnemyVirus("Fortnite V-Bucks.exe", 30, 100), Direction.EAST);
     }
 
     /**
@@ -279,9 +283,7 @@ public class Game {
             return;
         }
 
-        System.out.println( enemy.getName() +  " Hat noch: \nFirewall: " + enemy.getFirewall()+ "\nSystemintegrity: " +  enemy.getSystemIntegrity());
-
-        if (random.nextFloat() > 0.75f) {
+        if (random.nextFloat() > weapon.getHitrate()) {
             System.out.println("Kein Treffer!");
         } else {
             enemy.takeDamage(weapon.getDamage());
@@ -291,8 +293,8 @@ public class Game {
         if (enemy.isDead()) {
             System.out.println("Sie haben den " + this.aktuellerRaum.getEnemy().getName() + " besiegt!");
 
-            if (enemy.getItem() != null) {
-                this.aktuellerRaum.setItem(enemy.getItem());
+            if (enemy instanceof PcUser pcUser && pcUser.getItem() != null) {
+                this.aktuellerRaum.setItem(pcUser.getItem());
                 System.out.println("Der Gegner hat ein Item fallen gelassen.");
             }
 
@@ -300,6 +302,12 @@ public class Game {
 
             return;
         }
+
+        System.out.println(enemy.getName() + " Hat noch: ");
+        if (enemy instanceof PcUser pcuser) {
+            System.out.println("Firewall: " + pcuser.getFirewall());
+        }
+        System.out.println("Systemintegrity: " + enemy.getSystemintegrity());
 
         try {
             Thread.sleep(3000);

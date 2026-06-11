@@ -14,7 +14,7 @@ public class User {
     public User(String pName) {
         this.name = pName;
 
-        getInventory().addItem(new Weapon("Digitale Faust", 50));
+        getInventory().addItem(new Weapon("Digitale Faust", 50,0.75f));
     }
 
     /**

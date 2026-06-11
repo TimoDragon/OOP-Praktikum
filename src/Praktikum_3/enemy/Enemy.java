@@ -1,39 +1,19 @@
 package Praktikum_3.enemy;
 
-import Praktikum_3.items.Item;
-
-public class Enemy {
+public abstract class Enemy {
     private final String name;
     private final int attackDamage;
-    private int firewall;
-    private int systemIntegrity;
-    private Item item;
-
-    /**
-     * Konstrukte des Enemies
-     * @param pName Name des Enemies
-     * @param pFirewall "Schild" des Gegners
-     * @param pSystemIntegrity Leben des Gegners
-     * @param attackDamage Attackschaden
-     */
-    public Enemy(String pName, int pFirewall, int pSystemIntegrity, int attackDamage) {
-        this(pName, pFirewall, pSystemIntegrity, attackDamage, null);
-    }
+    private int systemintegrity;
 
     /**
      * Konstrukte des Enemies mit Item
      * @param pName Name des Enemies
-     * @param pFirewall "Schild" des Gegners
-     * @param pSystemIntegrity Leben des Gegners
      * @param attackDamage Attackschaden
-     * @param pItem Item des Gegners
      */
-    public Enemy(String pName, int pFirewall, int pSystemIntegrity, int attackDamage, Item pItem) {
+    public Enemy(String pName, int attackDamage, int systemintegrity) {
         this.name = pName;
-        this.firewall = pFirewall;
-        this.systemIntegrity = pSystemIntegrity;
         this.attackDamage = attackDamage;
-        this.item = pItem;
+        this.systemintegrity = systemintegrity;
     }
 
     /**
@@ -48,28 +28,20 @@ public class Enemy {
      * Gibt die Total HP = firewall + systemIntegrity zurück
      * @return totalHP
      */
-    public int getTotalHP() {
-        return this.firewall + this.systemIntegrity;
-    }
+    public abstract int getTotalHP();
 
     /**
      * Funktion, welche den Gegner Schild und Leben abzieht
      * @param dmg Schaden der übergeben wird
      */
-    public void takeDamage(int dmg) {
-        int rest = dmg - firewall;
-        firewall = Math.max(0, firewall - dmg);
-        if (rest > 0)  {
-            systemIntegrity -= rest;
-        }
-    }
+    public abstract void takeDamage(int dmg);
 
     /**
      * Gibt zurück ob der Enemy noch lebt oder nicht
      * @return boolean
      */
     public boolean isDead() {
-        return this.systemIntegrity <= 0;
+        return this.systemintegrity <= 0;
     }
 
     /**
@@ -80,27 +52,20 @@ public class Enemy {
         return this.attackDamage;
     }
 
+
     /**
-     * Gibt den "Schild" des Gegners zurück
-     * @return firewall
+     *
+     * @return
      */
-    public int getFirewall() {
-        return this.firewall;
+    public int getSystemintegrity() {
+        return this.systemintegrity;
     }
 
     /**
-     * Gibt die Leben des Gegners zurück
-     * @return systemIntegrity
+     *
+     * @param systemintegrity
      */
-    public int getSystemIntegrity() {
-        return this.systemIntegrity;
-    }
-
-    /**
-     * gibt das Item des Gegners zurück
-     * @return item
-     */
-    public Item getItem() {
-        return this.item;
+    public void setSystemintegrity(int systemintegrity) {
+        this.systemintegrity = systemintegrity;
     }
 }
