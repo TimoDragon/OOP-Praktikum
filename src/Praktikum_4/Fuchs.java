@@ -1,8 +1,7 @@
 package Praktikum_4;
 
-import java.util.List;
 import java.util.Iterator;
-import java.util.Random;
+import java.util.List;
 
 /**
  * Ein simples Modell eines Fuchses.
@@ -26,10 +25,6 @@ public class Fuchs extends Tier {
     // dies die Anzahl der Schritte, die ein Fuchs bis zur
     //n�chsten Mahlzeit laufen kann.
     private static final int HASEN_NAEHRWERT = 4;
-	// Ein Zufallsgenerator, der die Geburten beeinflusst.
-    private static final Random rand = new Random();
-    
-    // Individuelle Eigenschaften (Instanzfelder).
 
     // Der Futter-Level, der durch das Fressen von Hasen erh�ht wird.
     private int futterLevel;
@@ -41,12 +36,11 @@ public class Fuchs extends Tier {
      * @param zufaelligesAlter falls true, hat der neue Fuchs ein 
      *        zuf�lliges Alter und einen zuf�lligen Futter-Level.
      */
-    public Fuchs(boolean zufaelligesAlter)
-    {
+    public Fuchs(boolean zufaelligesAlter) {
         super();
         if(zufaelligesAlter) {
-            setzeAlter(rand.nextInt(MAX_ALTER));
-            futterLevel = rand.nextInt(HASEN_NAEHRWERT);
+            setzeAlter(getRand().nextInt(MAX_ALTER));
+            futterLevel = getRand().nextInt(HASEN_NAEHRWERT);
         }
         else {
             // leave age at 0
@@ -59,8 +53,7 @@ public class Fuchs extends Tier {
      * Dabei kann er Nachwuchs geb�ren, vor Hunger sterben oder
      * an Altersschw�che.
      */
-    public void agiere(Feld aktuellesFeld, Feld naechstesFeld, List neueTiere)
-    {
+    public void agiere(Feld aktuellesFeld, Feld naechstesFeld, List neueTiere) {
         alterErhoehen();
         hungerVergroessern();
         if(istLebendig()) {
@@ -92,8 +85,7 @@ public class Fuchs extends Tier {
      * Erh�he das Alter dieses Fuchses. Dies kann zu seinem
      * Tod f�hren.
      */
-    private void alterErhoehen()
-    {
+    private void alterErhoehen() {
         setzeAlter(gibAlter()+1);
         if(gibAlter() > MAX_ALTER) {
             setzeGestorben();
@@ -104,8 +96,7 @@ public class Fuchs extends Tier {
      * Vergr��ere den Hunger dieses Fuchses. Dies kann zu seinem
      * Tode f�hren.
      */
-    private void hungerVergroessern()
-    {
+    private void hungerVergroessern() {
         futterLevel--;
         if(futterLevel <= 0) {
             setzeGestorben();
@@ -118,10 +109,8 @@ public class Fuchs extends Tier {
      * @param position die Position, an der sich der Fuchs befindet.
      * @return die Position mit Nahrung, oder null, wenn keine vorhanden.
      */
-    private Position findeNahrung(Feld feld, Position position)
-    {
-        Iterator nachbarPositionen =
-                          feld.nachbarpositionen(position);
+    private Position findeNahrung(Feld feld, Position position) {
+        Iterator nachbarPositionen = feld.nachbarpositionen(position);
         while(nachbarPositionen.hasNext()) {
             Position pos = (Position) nachbarPositionen.next();
             Object tier = feld.gibObjektAn(pos);
@@ -141,11 +130,10 @@ public class Fuchs extends Tier {
      * Geb�re Nachwuchs, wenn dieser Fuchs geb�rf�hig ist.
      * @return die Anzahl der Neugeborenen (kann Null sein).
      */
-    private int gebaereNachwuchs()
-    {
+    private int gebaereNachwuchs() {
         int geburten = 0;
-        if(kannGebaeren() && rand.nextDouble() <= GEBAER_WAHRSCHEINLICHKEIT) {
-            geburten = rand.nextInt(MAX_WURFGROESSE) + 1;
+        if(kannGebaeren() && getRand().nextDouble() <= GEBAER_WAHRSCHEINLICHKEIT) {
+            geburten = getRand().nextInt(MAX_WURFGROESSE) + 1;
         }
         return geburten;
     }
@@ -153,8 +141,7 @@ public class Fuchs extends Tier {
     /**
      * Liefere eine String-Beschreibung dieses Fuchses.
      */
-    public String toString()
-    {
+    public String toString() {
       return "Fuchs, Alter " + gibAlter();
     }
 
@@ -162,8 +149,7 @@ public class Fuchs extends Tier {
      * Ein Fuchs kann geb�ren, wenn er das geb�rf�hige
      * Alter erreicht hat.
      */
-    private boolean kannGebaeren()
-    {
+    private boolean kannGebaeren() {
         return gibAlter() >= GEBAER_ALTER;
     }
     

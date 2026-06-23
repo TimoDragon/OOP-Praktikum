@@ -156,8 +156,7 @@ public class Simulationsansicht extends JFrame {
          * Der GUI-Verwaltung mitteilen, wie gro� wir sein wollen.
          * Der Name der Methode ist durch die GUI-Verwaltung festgelegt.
          */
-        public Dimension getPreferredSize()
-        {
+        public Dimension getPreferredSize() {
             return new Dimension(feldBreite * DEHN_FAKTOR,
                                  feldHoehe * DEHN_FAKTOR);
         }

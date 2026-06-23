@@ -26,10 +26,12 @@ public class Simulator {
     private static final double FUCHSGEBURT_WAHRSCHEINLICH = 0.02;
     // Die Wahrscheinlichkeit f�r die Geburt eines Fuchses an
     // einer beliebigen Position im Feld.
-    private static final double HASENGEBURT_WAHRSCHEINLICH = 0.08;    
+    private static final double HASENGEBURT_WAHRSCHEINLICH = 0.08;
+
+    private static final double JAEGER_WAHRSCHEINLICH = 0.06;
 
     // Die Liste der Tiere im Feld
-    private List tiere;
+    private List akteure;
     // Die Liste der gerade geborenen Tiere
     private List neueTiere;
     // Der aktuelle Zustand des Feldes
@@ -41,12 +43,10 @@ public class Simulator {
     // Eine grafische Ansicht der Simulation
     private Simulationsansicht ansicht;
     
-    public static void main (String[] args)
-    {
+    public static void main (String[] args) {
     	Simulator sim = new Simulator();
     	sim.starteLangeSimulation();
     }
-
     
     /**
      * Erzeuge ein Simulationsfeld mit einer Standardgr��e.
@@ -61,15 +61,14 @@ public class Simulator {
      * @param tiefe die Tiefe des Feldes (muss gr��er als Null sein).
      * @param breite die Breite des Feldes (muss gr��er als Null sein).
      */
-    public Simulator(int tiefe, int breite)
-    {
+    public Simulator(int tiefe, int breite) {
         if(breite <= 0 || tiefe <= 0) {
             System.out.println("Abmessungen m�ssen gr��er als Null sein.");
             System.out.println("Benutze Standardwerte.");
             tiefe = STANDARD_TIEFE;
             breite = STANDARD_BREITE;
         }
-        tiere = new ArrayList();
+        akteure = new ArrayList();
         neueTiere = new ArrayList();
         feld = new Feld(tiefe, breite);
         naechstesFeld = new Feld(tiefe, breite);
@@ -78,6 +77,7 @@ public class Simulator {
         ansicht = new Simulationsansicht(tiefe, breite);
         ansicht.setzeFarbe(Fuchs.class, Color.blue);
         ansicht.setzeFarbe(Hase.class, Color.orange);
+        ansicht.setzeFarbe(Jaeger.class, Color.black);
         
         // Einen g�ltigen Startzustand einnehmen.
         zuruecksetzen();
@@ -87,8 +87,7 @@ public class Simulator {
      * Starte die Simulation vom aktuellen Zustand aus f�r einen l�ngeren
      * Zeitraum, etwa 500 Schritte.
      */
-    public void starteLangeSimulation()
-    {
+    public void starteLangeSimulation() {
         simuliere(500);
     }
     
@@ -97,10 +96,14 @@ public class Simulator {
      * Simulationsschritten durch.
      * Brich vorzeitig ab, wenn die Simulation nicht mehr aktiv ist.
      */
-    public void simuliere(int schritte)
-    {
+    public void simuliere(int schritte) {
         for(int schritt = 1; schritt <= schritte && ansicht.istAktiv(feld); schritt++) {
             simuliereEinenSchritt();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
     
@@ -109,23 +112,28 @@ public class Simulator {
      * Durchlaufe alle Feldpositionen und aktualisiere den 
      * Zustand jedes Fuchses und Hasen.
      */
-    public void simuliereEinenSchritt()
-    {
+    public void simuliereEinenSchritt() {
         schritt++;
         neueTiere.clear();
-        
-        // alle Tiere agieren lassen
-        for(Iterator iter = tiere.iterator(); iter.hasNext(); ) {
-            Tier tier = (Tier)iter.next();
-            if(tier.istLebendig()) {
-                tier.agiere(feld, naechstesFeld, neueTiere);
+        for (Iterator iter1 = akteure.iterator(); iter1.hasNext();) {
+            Akteur akteur = (Akteur) iter1.next();
+            if (akteur instanceof Jaeger) {
+                akteur.agiere(feld, naechstesFeld, neueTiere);
             }
-            else {
-                iter.remove();   // totes Tier entfernen
+        }
+
+        for(Iterator iter2 = akteure.iterator(); iter2.hasNext(); ) {
+            Akteur akteur = (Akteur) iter2.next();
+            if (akteur instanceof Tier tier) {
+                if (tier.istLebendig()) {
+                    tier.agiere(feld, naechstesFeld, neueTiere);
+                } else {
+                    iter2.remove();   // totes Tier entfernen
+                }
             }
         }
         // neu geborene Tiere in die Liste der Tiere einf�gen.
-        tiere.addAll(neueTiere);
+        akteure.addAll(neueTiere);
         
         // feld und n�chstesFeld am Ende des Schritts austauschen.
         Feld temp = feld;
@@ -143,7 +151,7 @@ public class Simulator {
     public void zuruecksetzen()
     {
         schritt = 0;
-        tiere.clear();
+        akteure.clear();
         feld.raeumen();
         naechstesFeld.raeumen();
         bevoelkere(feld);
@@ -153,10 +161,9 @@ public class Simulator {
     }
     
     /**
-     * Bev�lkere das Feld mit F�chsen und Hasen.
+     * Bev�lkere das Feld mit Füchsen, Hasen, Jägern
      */
-    private void bevoelkere(Feld feld)
-    {
+    private void bevoelkere(Feld feld) {
         Random rand = new Random();
         feld.raeumen();
         for(int zeile = 0; zeile < feld.gibTiefe(); zeile++) {
@@ -164,18 +171,22 @@ public class Simulator {
                 if(rand.nextDouble() <= FUCHSGEBURT_WAHRSCHEINLICH) {
                     Fuchs fuchs = new Fuchs(true);
                     fuchs.setzePosition(zeile, spalte);
-                    tiere.add(fuchs);
+                    akteure.add(fuchs);
                     feld.platziere(fuchs);
-                }
-                else if(rand.nextDouble() <= HASENGEBURT_WAHRSCHEINLICH) {
+                } else if(rand.nextDouble() <= HASENGEBURT_WAHRSCHEINLICH) {
                     Hase hase = new Hase(true);
                     hase.setzePosition(zeile, spalte);
-                    tiere.add(hase);
+                    akteure.add(hase);
                     feld.platziere(hase);
+                } else if (rand.nextDouble() <= JAEGER_WAHRSCHEINLICH) {
+                    Jaeger jaeger = new Jaeger();
+                    jaeger.setzePosition(zeile, spalte);
+                    akteure.add(jaeger);
+                    feld.platziere(jaeger);
                 }
                 // ansonsten die Position leer lassen
             }
         }
-        Collections.shuffle(tiere);
+        Collections.shuffle(akteure);
     }
 }

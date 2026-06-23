@@ -1,7 +1,6 @@
 package Praktikum_4;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * Ein einfaches Modell eines Hasen.
@@ -21,8 +20,6 @@ public class Hase extends Tier {
     private static final double GEBAER_WAHRSCHEINLICHKEIT = 0.15;
     // Die maximale Gr��e eines Wurfes (Anzahl der Jungen)
     private static final int MAX_WURFGROESSE = 5;
-    // Ein Zufallsgenerator, der die Geburten beeinflusst.
-    private static final Random rand = new Random();
     
     // Individuelle Eigenschaften eines Hasen (Instanzfelder).
     
@@ -31,21 +28,20 @@ public class Hase extends Tier {
      *(neu geboren) oder ein zuf�lliges Alter haben.
      * @param zufaelligesAlter soll der Hase ein zuf�lliges Alter haben?
      */
-    public Hase(boolean zufaelligesAlter)
-    {
+    public Hase(boolean zufaelligesAlter) {
         super();
         if(zufaelligesAlter) {
-            setzeAlter(rand.nextInt(MAX_ALTER));
+            setzeAlter(getRand().nextInt(MAX_ALTER));
         }
     }
     
     /**
+     *
      * Das was ein Hase die meiste Zeit tut - er l�uft herum.
      * Manchmal geb�rt er Nachwuchs und irgendwann stirbt er
      * an Altersschw�che.
      */
-    public void agiere(Feld feld, Feld naechstesFeld, List neueTiere)
-    {
+    public void agiere(Feld feld, Feld naechstesFeld, List neueTiere) {
         alterErhoehen();
         if(istLebendig()) {
             int geburten = gebaereNachwuchs();
@@ -72,8 +68,7 @@ public class Hase extends Tier {
      * Erh�he das Alter dieses Hasen.
      * Dies kann zu seinem Tod f�hren.
      */
-    private void alterErhoehen()
-    {
+    private void alterErhoehen() {
         setzeAlter(gibAlter()+1);
         if(gibAlter() > MAX_ALTER) {
             setzeGestorben();
@@ -84,11 +79,10 @@ public class Hase extends Tier {
      * Geb�re Nachwuchs, wenn dieser Hase geb�rf�hig ist.
      * @return die Anzahl der Neugeborenen (kann Null sein).
      */
-    private int gebaereNachwuchs()
-    {
+    private int gebaereNachwuchs() {
         int geburten = 0;
-        if(kannGebaeren() && rand.nextDouble() <= GEBAER_WAHRSCHEINLICHKEIT) {
-            geburten = rand.nextInt(MAX_WURFGROESSE) + 1;
+        if(kannGebaeren() && getRand().nextDouble() <= GEBAER_WAHRSCHEINLICHKEIT) {
+            geburten = getRand().nextInt(MAX_WURFGROESSE) + 1;
         }
         return geburten;
     }

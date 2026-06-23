@@ -7,7 +7,7 @@ import java.util.Random;
 
 /**
  * Ein rechteckiges Gitter von Feldpositionen.
- * Jede Position kann ein einzelnes Tier aufnehmen.
+ * Jede Position kann ein einzelnen Akteur aufnehmen.
  * 
  * @author David J. Barnes and Michael Kolling
  * @version 2003-04-16
@@ -17,8 +17,8 @@ public class Feld {
     
     // Die Tiefe und die Breite des Feldes
     private int tiefe, breite;
-    // Speicher f�r die Tiere
-    private Tier[][] feld;
+    // Speicher f�r die Akteure
+    private Akteur[][] feld;
 
     /**
      * Erzeuge ein Feld mit den angegebenen Dimensionen.
@@ -29,7 +29,7 @@ public class Feld {
     {
         this.tiefe = tiefe;
         this.breite = breite;
-        feld = new Tier[tiefe][breite];
+        feld = new Akteur[tiefe][breite];
     }
     
     /**
@@ -45,37 +45,34 @@ public class Feld {
     }
         
     /**
-     * Platziere das gegebene Tier an der angegebenen Position.
-     * Wenn an der Position bereits ein Tier eingetragen ist,
+     * Platziere den gegebene Akteur an der angegebenen Position.
+     * Wenn an der Position bereits ein Akteur eingetragen ist,
      * geht es verloren.
-     * @param tier das Tier, das platziert werden soll.
+     * @param akteur der Akteur, das platziert werden soll.
      */
-    public void platziere(Tier tier)
-    {
-        Position position = tier.gibPosition();
-        feld[position.gibZeile()][position.gibSpalte()] = tier;
+    public void platziere(Akteur akteur) {
+        Position position = akteur.gibPosition();
+        feld[position.gibZeile()][position.gibSpalte()] = akteur;
     }
     
     /**
-     * Liefere das Tier an der angegebenen Position, falls vorhanden.
+     * Liefere den Akteur an der angegebenen Position, falls vorhanden.
      * @param position die gew�nschte Position.
-     * @return das Tier an der angegebenen Position oder null, wenn
-     *         dort kein Tier ist.
+     * @return das Akteur an der angegebenen Position oder null, wenn
+     *         dort kein akteur ist.
      */
-    public Tier gibObjektAn(Position position)
-    {
+    public Akteur gibObjektAn(Position position) {
         return gibObjektAn(position.gibZeile(), position.gibSpalte());
     }
     
     /**
-     * Liefere das Tier an der angegebenen Position, falls vorhanden.
+     * Liefere der Akteur an der angegebenen Position, falls vorhanden.
      * @param zeile die gew�nschte Zeile.
      * @param spalte die gew�nschte Spalte.
-     * @return das Tier an der angegebenen Position oder null, wenn
-     *         dort kein Tier ist.
+     * @return der Akteur an der angegebenen Position oder null, wenn
+     *         dort kein Akteur ist.
      */
-    public Tier gibObjektAn(int zeile, int spalte)
-    {
+    public Akteur gibObjektAn(int zeile, int spalte) {
         return feld[zeile][spalte];
     }
     
@@ -88,8 +85,7 @@ public class Feld {
      * @return eine g�ltige Position innerhalb dieses Feldes. Das kann
      *         auch die gegebene Position selbst sein.
      */
-    public Position zufaelligeNachbarposition(Position position)
-    {
+    public Position zufaelligeNachbarposition(Position position) {
         int zeile = position.gibZeile();
         int spalte = position.gibSpalte();
         // Zuf�llig eine Abweichung von -1, 0 oder +1 f�r Zeile und Spalte w�hlen.
@@ -119,8 +115,7 @@ public class Feld {
      *         kann die gegebene Position selbst sein oder null, wenn
      *         alle Nachbarpositionen und die Position selbst belegt sind.
      */
-    public Position freieNachbarposition(Position position)
-    {
+    public Position freieNachbarposition(Position position) {
         Iterator nachbarn = nachbarpositionen(position);
         while(nachbarn.hasNext()) {
             Position naechste = (Position) nachbarn.next();
@@ -144,8 +139,7 @@ public class Feld {
      * @param position die Position, f�r die Nachbarpositionen zu liefern sind.
      * @return ein Iterator �ber Nachbarpositionen zur gegebenen Position.
      */
-    public Iterator nachbarpositionen(Position position)
-    {
+    public Iterator nachbarpositionen(Position position) {
         int zeile = position.gibZeile();
         int spalte = position.gibSpalte();
         LinkedList positionen = new LinkedList();

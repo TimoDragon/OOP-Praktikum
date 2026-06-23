@@ -1,38 +1,25 @@
 package Praktikum_4;
 
-import java.util.List;
-
 /**
  * Tier ist eine abstrakte Superklasse f�r Tiere. 
  * Sie verwaltet Eigenschaften, die alle Tiere gemein haben,
- * wie etwas das Alter oder eine Position.
  * 
  * @author David J. Barnes and Michael Kolling
  * @version 2003-04-16
  */
-public abstract class Tier {
+public abstract class Tier extends Akteur {
     // Das Alter dieses Tieres.
     private int alter;
     // Ist dieses Tier noch lebendig?
     private boolean lebendig;
-    // Die Position dieses Tieres.
-    private Position position;
 
     /**
      * Erzeuge ein Tier mit Alter Null (ein Neugeborenes).
      */
-    public Tier()
-    {
+    public Tier() {
         alter = 0;
         lebendig = true;
     }
-    
-    /**
-     * Lasse dieses Tier agieren - es soll das tun, was
-     * es tun muss oder m�chte.
-     */
-    abstract public void agiere(Feld aktuellesFeld, 
-                             Feld naechstesFeld, List neueTiere);
     
     /**
      * Pr�fe, ob dieses Tier noch lebendig ist.
@@ -46,8 +33,7 @@ public abstract class Tier {
     /**
      * Signalisiere diesem Tier, dass es gestorben ist.   :-(
      */
-    public void setzeGestorben()
-    {
+    public void setzeGestorben() {
         lebendig = false;
     }
     
@@ -67,33 +53,5 @@ public abstract class Tier {
     public void setzeAlter(int alter)
     {
         this.alter = alter;
-    }
-    
-    /**
-     * Liefere die Position dieses Tieres.
-     * @return die Position dieses Tieres.
-     */
-    public Position gibPosition()
-    {
-        return position;
-    }
-
-    /**
-     * Setze die Position dieses Tieres.
-     * @param zeile die vertikale Koordinate der Position.
-     * @param spalte die horizontale Koordinate der Position.
-     */
-    public void setzePosition(int zeile, int spalte)
-    {
-        this.position = new Position(zeile, spalte);
-    }
-
-    /**
-     * Setze die Position dieses Tieres.
-     * @param position die Position dieses Tieres.
-     */
-    public void setzePosition(Position position)
-    {
-        this.position = position;
     }
 }
