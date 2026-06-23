@@ -28,7 +28,7 @@ public class Simulator {
     // einer beliebigen Position im Feld.
     private static final double HASENGEBURT_WAHRSCHEINLICH = 0.08;
 
-    private static final double JAEGER_WAHRSCHEINLICH = 0.06;
+    private static final double JAEGER_WAHRSCHEINLICH = 0.01;
 
     // Die Liste der Tiere im Feld
     private List akteure;
