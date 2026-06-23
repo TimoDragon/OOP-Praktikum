@@ -46,6 +46,8 @@ public class Simulator {
     public static void main (String[] args) {
     	Simulator sim = new Simulator();
     	sim.starteLangeSimulation();
+        Jaeger j = new Jaeger();
+        System.out.println(j.getKills());
     }
     
     /**
@@ -100,7 +102,7 @@ public class Simulator {
         for(int schritt = 1; schritt <= schritte && ansicht.istAktiv(feld); schritt++) {
             simuliereEinenSchritt();
             try {
-                Thread.sleep(100);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

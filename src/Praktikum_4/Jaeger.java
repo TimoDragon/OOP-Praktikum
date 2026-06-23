@@ -6,6 +6,8 @@ public class Jaeger extends Akteur{
 
     private static final int ANZAHL_RAND_SCHUESSE = 5;
 
+    private static int kills = 0;
+
     public Jaeger() {
         super();
     }
@@ -16,6 +18,7 @@ public class Jaeger extends Akteur{
             Position pos = aktuellesFeld.zufaelligeNachbarposition(this.gibPosition());
             if (aktuellesFeld.gibObjektAn(pos) instanceof Tier tier) {
                 tier.setzeGestorben();
+                kills++;
             }
         }
 
@@ -27,10 +30,10 @@ public class Jaeger extends Akteur{
 
         setzePosition(neuePosition);
 
-        if (aktuellesFeld.gibObjektAn(this.gibPosition()) instanceof Tier tier) {
-            tier.setzeGestorben();
-        }
-
         naechstesFeld.platziere(this);
+    }
+
+    public int getKills() {
+        return kills;
     }
 }
