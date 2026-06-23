@@ -60,10 +60,13 @@ public class Fuchs extends Tier {
             // neue F�chse werden in Nachbarpositionen geboren.
             int geburten = gebaereNachwuchs();
             for(int b = 0; b < geburten; b++) {
-                Fuchs neuerFuchs = new Fuchs(false);
-                neueTiere.add(neuerFuchs);
-                neuerFuchs.setzePosition(naechstesFeld.zufaelligeNachbarposition(gibPosition()));
-                naechstesFeld.platziere(neuerFuchs);
+                Position gebPos = naechstesFeld.freieNachbarposition(gibPosition());
+                if (gebPos != null) {
+                    Fuchs neuerFuchs = new Fuchs(false);
+                    neueTiere.add(neuerFuchs);
+                    neuerFuchs.setzePosition(gebPos);
+                    naechstesFeld.platziere(neuerFuchs);
+                }
             }
             // In die Richtung bewegen, in der Futter gefunden wurde.
             Position neuePosition = findeNahrung(aktuellesFeld, gibPosition());

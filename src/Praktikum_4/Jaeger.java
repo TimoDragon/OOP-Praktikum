@@ -12,23 +12,28 @@ public class Jaeger extends Akteur{
 
     @Override
     public void agiere(Feld aktuellesFeld, Feld naechstesFeld, List neueAkteure) {
-        Position neuePosition = aktuellesFeld.zufaelligeNachbarposition(this.gibPosition());
-
         for (int i = 0; i < ANZAHL_RAND_SCHUESSE; i++) {
-            Position pos = aktuellesFeld.zufaelligeNachbarposition(gibPosition());
+            Position pos = aktuellesFeld.zufaelligeNachbarposition(this.gibPosition());
             if (aktuellesFeld.gibObjektAn(pos) instanceof Tier tier) {
                 tier.setzeGestorben();
             }
         }
 
-        if (aktuellesFeld.gibObjektAn(neuePosition) instanceof Tier tier){
-            setzePosition(neuePosition);
+        Position neuePosition = aktuellesFeld.zufaelligeNachbarposition(this.gibPosition());
+
+        Object objektAufZiel = naechstesFeld.gibObjektAn(neuePosition);
+
+        if (objektAufZiel instanceof Jaeger) {
+            naechstesFeld.platziere(this);
+            return;
+        }
+
+        setzePosition(neuePosition);
+
+        if (aktuellesFeld.gibObjektAn(this.gibPosition()) instanceof Tier tier) {
             tier.setzeGestorben();
-        } else if (aktuellesFeld.gibObjektAn(neuePosition) == null) {
-            setzePosition(neuePosition);
         }
 
         naechstesFeld.platziere(this);
-
     }
 }

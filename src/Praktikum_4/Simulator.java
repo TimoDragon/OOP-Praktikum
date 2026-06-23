@@ -136,9 +136,9 @@ public class Simulator {
         akteure.addAll(neueTiere);
         
         // feld und n�chstesFeld am Ende des Schritts austauschen.
-        Feld temp = feld;
+        Feld tmp = feld;
         feld = naechstesFeld;
-        naechstesFeld = temp;
+        naechstesFeld = tmp;
         naechstesFeld.raeumen();
 
         // das neue Feld in der Ansicht anzeigen.
@@ -148,8 +148,7 @@ public class Simulator {
     /**
      * Setze die Simulation an den Anfang zur�ck.
      */
-    public void zuruecksetzen()
-    {
+    public void zuruecksetzen() {
         schritt = 0;
         akteure.clear();
         feld.raeumen();
@@ -165,6 +164,8 @@ public class Simulator {
      */
     private void bevoelkere(Feld feld) {
         Random rand = new Random();
+        int i = 0;
+
         feld.raeumen();
         for(int zeile = 0; zeile < feld.gibTiefe(); zeile++) {
             for(int spalte = 0; spalte < feld.gibBreite(); spalte++) {

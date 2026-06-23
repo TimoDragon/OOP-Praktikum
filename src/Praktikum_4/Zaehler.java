@@ -20,8 +20,7 @@ public class Zaehler {
      * Initialisiere mit dem Namen des Typs.
      * @param name Ein Name, z.B. "Fuchs".
      */
-    public Zaehler(String name)
-    {
+    public Zaehler(String name) {
         this.name = name;
         zaehler = 0;
     }

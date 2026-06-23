@@ -92,8 +92,7 @@ public class Feld {
         int naechsteZeile = zeile + rand.nextInt(3) - 1;
         int naechsteSpalte = spalte + rand.nextInt(3) - 1;
         // Pr�fen, ob die neue Position au�erhalb der Feldgrenzen liegt.
-        if(naechsteZeile < 0 || naechsteZeile >= tiefe
-           || naechsteSpalte < 0 || naechsteSpalte >= breite) {
+        if(naechsteZeile < 0 || naechsteZeile >= tiefe || naechsteSpalte < 0 || naechsteSpalte >= breite) {
             return position;
         }
         else if(naechsteZeile != zeile || naechsteSpalte != spalte) {
