@@ -19,11 +19,10 @@ public class Jaeger extends Akteur{
             }
         }
 
-        Position neuePosition = aktuellesFeld.zufaelligeNachbarposition(this.gibPosition());
+        Position neuePosition = naechstesFeld.freieNachbarposition(this.gibPosition());
 
-        if (naechstesFeld.gibObjektAn(neuePosition) instanceof Jaeger) {
-            naechstesFeld.platziere(this);
-            return;
+        if (neuePosition == null) {
+            neuePosition = this.gibPosition();
         }
 
         setzePosition(neuePosition);
