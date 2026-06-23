@@ -52,7 +52,9 @@ public class Feld {
      */
     public void platziere(Akteur akteur) {
         Position position = akteur.gibPosition();
-        feld[position.gibZeile()][position.gibSpalte()] = akteur;
+        if (feld[position.gibZeile()][position.gibSpalte()] == null ) {
+            feld[position.gibZeile()][position.gibSpalte()] = akteur;
+        }
     }
     
     /**

@@ -21,9 +21,7 @@ public class Jaeger extends Akteur{
 
         Position neuePosition = aktuellesFeld.zufaelligeNachbarposition(this.gibPosition());
 
-        Object objektAufZiel = naechstesFeld.gibObjektAn(neuePosition);
-
-        if (objektAufZiel instanceof Jaeger) {
+        if (naechstesFeld.gibObjektAn(neuePosition) instanceof Jaeger) {
             naechstesFeld.platziere(this);
             return;
         }
